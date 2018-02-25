@@ -1,5 +1,5 @@
 # Kriiza Shain
-A Blockchain applications made for product's history.
+A Blockchain application made for product's history.
 
 # Requirements
 - Go Ethereum Client (^1.8.1): https://geth.ethereum.org/install/
