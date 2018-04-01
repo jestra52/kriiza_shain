@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+    
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        
+            <h1>Block</h1>
+            <h2 id="blockchain"></h2>
+
+            <h1>Person</h1>    
+            <h2 id="instructor"></h2>
+
+            <span id="countIns"></span>
+            <h2 id="instructor"></h2>
+            <span id="insTrans"></span>
+            <hr>
+
+            <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif">
+    
+            <label for="fName" class="col-lg-2 control-label">First Name</label>
+            <input id="fName" type="text">
+
+            <label for="lName" class="col-lg-2 control-label">Last Name</label>
+            <input id="lName" type="text">
+
+            <label for="age" class="col-lg-2 control-label">Age</label>
+            <input id="age" type="text">
+
+            <h2 id="error"></h2>
+    
+            <button id="button">Update Person</button>
+        
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+
+        var Web3 = require('web3');
+        var web3 = new Web3();
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } 
+        else {
+            // set the provider you want from Web3.providers
+            web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+        }
+
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+
+        var CourseContract = web3.eth.contract([
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "_address",
+                        "type": "address"
+                    }
+                ],
+                "name": "getInstructor",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "",
+                        "type": "string"
+                    },
+                    {
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "_address",
+                        "type": "address"
+                    },
+                    {
+                        "name": "_age",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "_fName",
+                        "type": "string"
+                    },
+                    {
+                        "name": "_lName",
+                        "type": "string"
+                    }
+                ],
+                "name": "setInstructor",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getInstructors",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address[]"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "countInstructors",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "instructorAccounts",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "name": "age",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "fName",
+                        "type": "string"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "lName",
+                        "type": "string"
+                    }
+                ],
+                "name": "instructorInfo",
+                "type": "event"
+            }
+        ]);
+
+        var Course = CourseContract.at('0x8cdaf0cd259887258bc13a92c0a6da92698644c0');
+            
+        var instructorInfo = Course.instructorInfo({}, 'latest');
+
+        instructorInfo.watch( (err, result) => {
+            if (!err) {
+                if (result.blockHash != $('#insTrans').html())
+                    $("#loader").hide();
+
+                $('#insTrans').html('Block hash: ' + result.blockHash);
+                $("#blockchain").html('Number: ' + web3.eth.getBlock(web3.eth.blockNumber).number);
+                $("#instructor").html(result.args.fName + ' ' + result.args.lName + ' (' + result.args.age + ' years old)');
+            }
+            else {
+                $("#loader").hide();
+                console.log(err);
+            }
+        });
+
+        Course.countInstructors((err, res) => {
+            if (res)
+                $('#countIns').html(res.c + ' instructors');
+        });
+
+        $("#button").click( () => {
+            $("#loader").show();
+            Course.setInstructor(web3.eth.defaultAccount, $("#age").val(), $("#fName").val(), $("#lName").val(), (err, res) => {
+                if (err) {
+                    $('#loader').hide();
+                    $('#error').html('You are not authorized to change this contract');
+                    console.log(err);
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
