@@ -1,27 +1,26 @@
 'use strict';
 
-/*********************************************************************************
- * REQUIRES AND VARIABLES
- *********************************************************************************/
 const express = require('express');
 const logger  = require('morgan');
+const config  = require('./config/config');
 const app     = express();
-const router  = express.Router();
+
+// Routes
+const apiRoutes = require('./routes/apiRoutes');
 
 /*********************************************************************************
  * APP CONFIGURATION
  *********************************************************************************/
 app.use(logger('dev'));
-router.get('/', (req, res) => {
-    res.send('OK!');
-});
-app.use('/', router);
+
+// Routes config
+app.use('/api', apiRoutes);
 
 /*********************************************************************************
- * APP WEB SERVER CONFIGURATION 
+ * WEB APP SERVER CONFIGURATION 
  *********************************************************************************/
-var appServer = app.listen(3000, () => {
-    console.log('App running on port 3000');
+var appServer = app.listen(config.port, () => {
+    console.log('App running on', config.host, ':', config.port);
 })
 
 // Cleaning project instances
