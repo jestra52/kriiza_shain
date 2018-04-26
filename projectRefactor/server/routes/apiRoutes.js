@@ -9,5 +9,6 @@ apiRouter.get('/', (req, res) => {
 
 apiRouter.get('/user/:id', userController.getById);
 apiRouter.post('/user/create', userController.create);
+apiRouter.get('/user', userController.getAll);
 
 module.exports = apiRouter;

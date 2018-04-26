@@ -2,5 +2,6 @@
 
 module.exports = {
     create: require('./create'),
-    getById: require('./getById')
+    getById: require('./getById'),
+    getAll: require('./getAll')
 };

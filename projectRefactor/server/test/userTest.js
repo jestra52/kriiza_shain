@@ -26,6 +26,7 @@ describe('User requests', () => {
 
         it('it should POST a user', (done) => {
             let userObj = {
+                username: "jestra52",
                 email: "jestra52@eafit.edu.co",
                 password: "1234",
                 firstName: "Juan",
@@ -40,6 +41,7 @@ describe('User requests', () => {
                                     .eql('User successfully created');
                 res.body.should.have.property('userStored');
                 res.body.userStored.should.be.a('object');
+                res.body.userStored.should.have.property("username");
                 res.body.userStored.should.have.property("email");
                 res.body.userStored.should.have.property("password");
                 res.body.userStored.should.have.property("firstName");
@@ -61,6 +63,7 @@ describe('User requests', () => {
 
         it('it should GET a user by the given id', (done) => {
             let user = new User({
+                username: "jestra52",
                 email: "jestra52@eafit.edu.co",
                 password: "1234",
                 firstName: "Juan",
@@ -80,6 +83,8 @@ describe('User requests', () => {
                                         .eql('User successfully readed');
                     res.body.should.have.property('userData');
                     res.body.userData.should.be.a('object');
+                    res.body.userData.should.have.property("username")
+                                                 .eql(userStored.username);
                     res.body.userData.should.have.property("email")
                                                  .eql(userStored.email);
                     res.body.userData.should.have.property("password")

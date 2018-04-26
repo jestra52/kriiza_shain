@@ -32,12 +32,14 @@ let create = (req, res) => {
             date.setMinutes(date.getMinutes() - offset);
 
             // Setting schema attributes
-            userToCreate.email     = req.body.email;
-            userToCreate.password  = req.body.password;
-            userToCreate.firstName = req.body.firstName;
-            userToCreate.lastName  = req.body.lastName;
-            userToCreate.createdAt = date.toISOString();
-            userToCreate.updatedAt = date.toISOString();
+            userToCreate.username      = req.body.username;
+            userToCreate.email         = req.body.email;
+            userToCreate.password      = req.body.password;
+            userToCreate.firstName     = req.body.firstName;
+            userToCreate.lastName      = req.body.lastName;
+            userToCreate.chainAccount  = req.body.chainAccount;
+            userToCreate.createdAt     = date.toISOString();
+            userToCreate.updatedAt     = date.toISOString();
 
             userToCreate.save((errS, userStored) => {
                 if (errS) {

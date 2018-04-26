@@ -26,6 +26,7 @@ let getById = (req, res) => {
             userData: userData
         });
     });
+    
 };
 
 module.exports = getById;
