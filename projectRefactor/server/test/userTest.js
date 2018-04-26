@@ -5,6 +5,7 @@ process.env.NODE_ENV = 'test';
 const mongoose = require('mongoose');
 const chai     = require('chai');
 const chaiHttp = require('chai-http');
+const bcrypt   = require('bcrypt');
 
 const User   = require('../models/User');
 const server = require('../app');
@@ -62,10 +63,12 @@ describe('User requests', () => {
         date.setMinutes(date.getMinutes() - offset);
 
         it('it should GET a user by the given id', (done) => {
+            let saltRounds = 12;
+            let plainPassword = "1234";
             let user = new User({
                 username: "jestra52",
                 email: "jestra52@eafit.edu.co",
-                password: "1234",
+                password: bcrypt.hashSync(plainPassword, saltRounds),
                 firstName: "Juan",
                 lastName: "Estrada",
                 createdAt: date.toISOString(),
@@ -89,6 +92,9 @@ describe('User requests', () => {
                                                  .eql(userStored.email);
                     res.body.userData.should.have.property("password")
                                                  .eql(userStored.password);
+                    bcrypt.compare(plainPassword, userStored.password, (errH, resH) => {
+                        resH.should.be.true;
+                    });
                     res.body.userData.should.have.property("firstName")
                                                  .eql(userStored.firstName);
                     res.body.userData.should.have.property("lastName")
