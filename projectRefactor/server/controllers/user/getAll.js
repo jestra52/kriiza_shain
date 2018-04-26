@@ -2,6 +2,11 @@
 
 const User = require('../../models/User');
 
+/*********************************************************************************
+* Web service: Get all users with non-sensitive data
+* URI: /api/user
+* Method: GET
+*/
 let getAll = (req, res) => {
 
     User.find({}, (err, users) => {

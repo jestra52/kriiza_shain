@@ -2,6 +2,11 @@
 
 const User = require('../../models/User');
 
+/*********************************************************************************
+* Web service: Get user by its ID
+* URI: /api/user/:id
+* Method: GET
+*/
 let getById = (req, res) => {
 
     User.findById(req.params.id, (err, userData) => {

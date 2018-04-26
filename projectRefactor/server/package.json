@@ -24,6 +24,7 @@
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-plumber": "^1.2.0",
+    "jsonwebtoken": "^8.2.1",
     "mocha": "^5.1.1",
     "mongoose": "^5.0.16",
     "morgan": "^1.9.0",

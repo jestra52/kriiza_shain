@@ -1,8 +1,10 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
+const jwt    = require('jsonwebtoken');
 
-const User = require('../../models/User');
+const User   = require('../../models/User');
+const config = require('../../config/config');
 
 /*********************************************************************************
  * Web service: Create a new user
@@ -66,11 +68,17 @@ let create = (req, res) => {
     
                         throw errS;
                     }
-    
-                    return res.status(200).json({
-                        success: true,
-                        message: 'User successfully created',
-                        userStored: userStored
+
+                    jwt.sign({ userStored }, config.secret, { 
+                        expiresIn: config.tokenExpiresIn 
+                    }, 
+                    (errT, token) => {
+                        return res.status(200).json({
+                            success: true,
+                            message: 'User successfully created',
+                            userStored: userStored,
+                            token: token
+                        });
                     });
                 });
             });            

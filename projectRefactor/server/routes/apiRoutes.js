@@ -1,14 +1,67 @@
 'use strict';
 
-const apiRouter      = require('express').Router();
+const apiRouter = require('express').Router();
+const jwt       = require('jsonwebtoken');
+
 const userController = require('../controllers/user/exports');
+const authController = require('../controllers/auth/exports');
+const config         = require('../config/config');
 
 apiRouter.get('/', (req, res) => {
     res.send('OK!');
 });
 
-apiRouter.get('/user/:id', userController.getById);
+let verifyToken = (req, res, next) => {
+    // Get auth header value
+    let bearerHeader = req.headers.authorization;
+    // Check if bearer is not undefined
+    if (typeof bearerHeader !== 'undefined') {
+        // Split at the space
+        // Bearer <access_token>
+        let bearerToken = bearerHeader.split(' ')[1];
+        // Set the token
+        req.token = bearerToken;
+
+        jwt.verify(req.token, config.secret, (err, authData) => {
+            if (err) {
+                req.user = undefined;
+
+                if (err.expiredAt) {
+                    let offset = err.expiredAt.getTimezoneOffset();
+                    err.expiredAt.setMinutes(err.expiredAt.getMinutes() - offset);
+                }
+                
+                return res.status(500).json({
+                    success: false,
+                    message: 'There was a problem verifying the token',
+                    errors: err
+                });
+
+                throw err;
+            }
+
+            req.user = authData;
+            next();
+        });
+    }
+    else {
+        // Forbidden
+        req.user = undefined;
+        return res.status(403).json({
+            success: false,
+            message: 'Forbidden - unauthorized'
+        });
+    }
+};
+
+// Middlewares to verify
+//apiRouter.all('/user/:id', verifyToken);
+//apiRouter.all('/users', verifyToken);
+
+apiRouter.get('/user/:id', verifyToken, userController.getById);
 apiRouter.post('/user/create', userController.create);
-apiRouter.get('/user', userController.getAll);
+apiRouter.get('/users', verifyToken, userController.getAll);
+
+apiRouter.post('/auth/login', authController.login);
 
 module.exports = apiRouter;
