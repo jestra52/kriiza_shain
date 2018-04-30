@@ -8,6 +8,7 @@ const authController = require('../controllers/auth/exports');
 const config         = require('../config/config');
 
 apiRouter.get('/', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     res.send('OK!');
 });
 
