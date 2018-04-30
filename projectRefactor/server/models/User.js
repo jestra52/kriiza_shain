@@ -2,6 +2,8 @@
 
 const mongoose = require('mongoose');
 
+const BCTransaction = require('./BCTransaction');
+
 let UserSchema = new mongoose.Schema({
 
     username: { type: String, required: true },
@@ -9,7 +11,7 @@ let UserSchema = new mongoose.Schema({
     password: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    chainAccount: { type: String },
+    chainInfo: [ BCTransaction ],
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true }
 
