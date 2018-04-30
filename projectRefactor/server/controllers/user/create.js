@@ -13,6 +13,8 @@ const config = require('../../config/config');
  */
 let create = (req, res) => {
 
+    res.header("Access-Control-Allow-Origin", "*");
+
     User.findOne({ email: req.body.email }, (errF, userFound) => {
         if (errF) {
             return res.status(500).json({

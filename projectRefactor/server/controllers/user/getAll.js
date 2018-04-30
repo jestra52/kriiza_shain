@@ -9,6 +9,8 @@ const User = require('../../models/User');
 */
 let getAll = (req, res) => {
 
+    res.header("Access-Control-Allow-Origin", "*");
+
     User.find({}, (err, users) => {
         if (err) {
             return res.status(500).json({
