@@ -10,12 +10,16 @@ Vue.use(Router)
 var router = new Router({
   routes: [
     {
-      path: '/',
-      component: main
+      path: '/login',
+      component: login
     },
     {
       path: '/signup',
       component: signup
+    },
+    {
+      path: '/',
+      component: main
     }
   ]
 });
