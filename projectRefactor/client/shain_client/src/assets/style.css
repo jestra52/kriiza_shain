@@ -1,0 +1,142 @@
+.form-login, .form-signup{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 50%;
+}
+#firstName, #email, #password, #lastName{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: inherit;
+}
+body {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+      color: #666;
+      background: #f2f2f2; 
+      font-size: 1em;
+      line-height: 1.5em;
+      
+      padding-top: 80px;
+  }
+  
+  #title, #subtitle, #alert-danger{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  
+  #alert-danger{
+    width: 20%;
+  }
+  
+  #firstName, #lastName ,#email ,#password{
+    margin-top: 1%;
+  }
+  
+  #btnLogin{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: inherit;
+    justify-content: space-between;
+  }
+  
+  #titlePP, #options{
+    display: inline-block;
+  }
+
+  #titlePP{
+    margin-left: 3%;
+    margin-top: 2%;
+    text-transform: capitalize;
+    float: left;
+  }
+  
+  #options{
+    margin-top: 1%;
+    float: right;
+  }
+
+  #btn-form{
+      float:left;
+  }
+  
+  #topBar{
+    background: #666;
+    color: white;
+    height: 70px;
+  
+    width: 100%;
+    left: 0;
+    top: 0;
+    position: fixed;
+  }
+  
+  .btnProfile{
+    color: white;
+  }
+  
+  #btnConfig{
+    margin-top: 7px;
+  }
+  
+  #map{
+    width: 100%;
+    height: 400px;
+  }
+  
+  
+  #botBar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #666;
+    color: white;
+    text-align: center;
+    height: 40px;
+  }
+  
+  #creado{
+    float: left;
+    margin-left: 3%;
+    margin-top: 1%;
+  }
+  
+  #infoBot{
+    float: right;
+    text-align: center;
+    margin-right: 2%;
+    margin-top: 0.5%;
+  }
+
+  #undermine{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 50%;
+  }
+
+  #hash, #start{
+    text-align: center;
+    display: inline-block;
+  }
+
+  #hash{
+    width: 80%;
+  }
+  
+  #btnSaveRoute{
+    float: center ;
+    text-align: center;
+    margin-left: 45%;
+    margin-right: 45%;
+    width: 10%;
+    margin-top: 1%;
+  }
+  
