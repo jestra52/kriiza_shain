@@ -1,17 +1,54 @@
 <template>
-    <div id="login">
-        <h1>SHAIN</h1>
-        <h3>Ingrese Con Su Cuenta</h3>
+    <div id="login" class="form-login">
+        <div id="topBar">
+            <h3 id="titlePP">SHAIN</h3>
+            <table id="options" align="right" name="options">
+                <tr>
+                    <th>
+                        <router-link to="/">
+                            <a class="btn btn-light">
+                                <span class="btn btn-light btnProfile">Inicio</span> 
+                            </a>
+                        </router-link>
+                    </th>
+                    <th>
+                        <router-link to="/login">
+                            <a class="btn btn-light btnProfile">
+                                <span class="btn btn-light">Iniciar sesión</span> 
+                            </a>
+                        </router-link>
+                    </th>
+                    <th>
+                        <router-link to="/signup">
+                            <a class="btn btn-light btnProfile">
+                                <span class="btn btn-light">Crear cuenta</span> 
+                            </a>
+                        </router-link>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <h3>Ingrese con su cuenta</h3>
         <div class="alert alert-danger" v-if="error">
             <p>{{ error }}</p>
         </div>
         <div id="box-login">
-            <input type="text" id="email" v-model="email" placeholder="Email">
-            <input type="password" id="password" v-model="password" placeholder="Contraseña">
+            <input type="text" class="form-control" id="email" v-model="email" placeholder="Email">
+            <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña">
         </div>
-        <div>
+        <div id="btnLogin">
             <button class="btn btn-primary" @click="submit()">Ingresar</button>
-            <router-link to="/signup">¿No tienes una cuenta?</router-link>
+        </div>
+        <p id="demo"></p>
+        <div  id="botBar">
+            <h5 id="creado"> Creado por la compañia Kriiza </h5>
+            <table id="infoBot">
+                <tr>
+                    <th id="derechos">
+                        <h5>Todos los derechos reservados   2018</h5>
+                    </th>
+                </tr>
+            </table>
         </div>
     </div>
 </template>
@@ -54,5 +91,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
