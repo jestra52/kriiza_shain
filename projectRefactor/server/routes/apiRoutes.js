@@ -3,9 +3,10 @@
 const apiRouter = require('express').Router();
 const jwt       = require('jsonwebtoken');
 
-const userController = require('../controllers/user/exports');
-const authController = require('../controllers/auth/exports');
-const config         = require('../config/config');
+const userController       = require('../controllers/user/exports');
+const authController       = require('../controllers/auth/exports');
+const bcaccountsController = require('../controllers/bcaccounts/exports');
+const config               = require('../config/config');
 
 apiRouter.get('/', (req, res) => {
 
@@ -66,5 +67,7 @@ apiRouter.post('/user/create', userController.create);
 apiRouter.get('/users', verifyToken, userController.getAll);
 
 apiRouter.post('/auth/login', authController.login);
+
+apiRouter.get('/bcaccounts/currentCounter', bcaccountsController.getCurrentCounter);
 
 module.exports = apiRouter;
