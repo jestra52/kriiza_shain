@@ -89,6 +89,18 @@
                     </table>
                 </div>
             </div>
+
+            <div id="bcAccounts">
+                <h2>Cuentas</h2>
+                <ul>
+                    <li v-for="bcAccount in getBcAccounts" :key="bcAccount.id" >
+                        <span class="owner">Propietario: {{ bcAccount.owner }}</span><br>
+                        <span class="accountHash">Cuenta BC: {{ bcAccount.bcAccount }}</span>
+                    </li>
+                </ul>
+                <button class="btn btn-primary btn-form" v-on:click="submit()">Ver cuentas</button>
+            </div>
+
         </div>
     </div>
 </template>
@@ -104,29 +116,61 @@ var Mycontract = truffleContract(contract);
 Mycontract.setProvider(provider);
 function getBalancesVerde(){
     console.log('Getting balances...');
-    
+
     var cafeVerdeInstance;
 
     web3.eth.getAccounts(function (error, accounts) {
-      if (error) {
-        console.log(error);
-      }
+        if (error) {
+            console.log(error);
+        }
 
-      var account = accounts[0];
-      
-      Mycontract.deployed().then(function (instance) {
-        cafeVerdeInstance = instance;
-        console.log(cafeVerdeInstance);
-        return cafeVerdeInstance.balanceOf(account);
-      }).then(function (result) {
-        balance = result.c[0];
-        console.log(balance);
-        //$('#cafeVerde').text(balance);
-      }).catch(function (err) {
-        console.log(err.message);
-      });
+        var account = accounts[0];
+
+        Mycontract.deployed().then(function (instance) {
+            cafeVerdeInstance = instance;
+            console.log(cafeVerdeInstance);
+            return cafeVerdeInstance.balanceOf(account);
+        }).then(function (result) {
+            balance = result.c[0];
+            console.log(balance);
+            //$('#cafeVerde').text(balance);
+        }).catch(function (err) {
+            console.log(err.message);
+        });
     });
 }
 getBalancesVerde();
+
+import { mapGetters, mapActions} from 'vuex';
+import { store } from '../store/store';
+
+export default {
+    data () {
+        return {
+            hash: ''
+        }
+    },
+
+    computed: {
+        ...mapGetters([
+            'getUser',
+            'getErrorMessage',
+            'getBcAccounts'
+        ])
+    },
+
+    store,
+
+    methods: {
+        submit () {
+            this.$store.dispatch('getAllAccounts');
+        },
+
+        ...mapActions([
+            'getUserInfo',
+            'getAllAccounts'
+        ])
+    }
+}
 
 </script>

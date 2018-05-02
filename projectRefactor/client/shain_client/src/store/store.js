@@ -17,7 +17,8 @@ export const store = new Vuex.Store({
             isLoggedIn: false,
             token: ''
         },
-        errorMessage: {}
+        errorMessage: {},
+        bcAccounts: {}
     },
 
     getters: {
@@ -27,6 +28,10 @@ export const store = new Vuex.Store({
 
         getErrorMessage: (state) => {
             return state.errorMessage;
+        },
+
+        getBcAccounts: (state) => {
+            return state.bcAccounts;
         }
     },
 
@@ -38,6 +43,10 @@ export const store = new Vuex.Store({
 
         addUserData: (state, userData) => {
             state.user.data = userData;
+        },
+
+        addBcAccounts: (state, bcAccounts) => {
+            state.bcAccounts = bcAccounts;
         },
 
         addError: (state, errorMessage) => {
@@ -72,6 +81,64 @@ export const store = new Vuex.Store({
                     data: err.response.data
                 });
             });
+        },
+
+        getUserInfo: (context, userInfo) => {
+            if (!context.state.user.isLoggedIn) {
+                console.log('USER NOT AUTHENTICATED');
+            }
+            else {
+                let id   = context.state.user.data._id;
+                let opts = {
+                    headers: {
+                        'Authorization': 'Bearer ' + context.state.user.token
+                    }
+                };
+
+                axios.get('http://127.0.0.1:3000/api/user/' + id, opts).then(res => {
+                    console.log("RESPONSE:", {
+                        status: res.status,
+                        data: res.data
+                    });
+
+                    context.commit('addUserData', res.data.userData);
+                })
+                .catch(err => {
+                    console.log("RESPONSE:", {
+                        status: err.response.status,
+                        data: err.response.data
+                    });
+                });
+            }
+        },
+
+        getAllAccounts: (context, bcAccounts) => {
+            if (!context.state.user.isLoggedIn) {
+                console.log('USER NOT AUTHENTICATED');
+            }
+            else {
+                let id   = context.state.user.data._id;
+                let opts = {
+                    headers: {
+                        'Authorization': 'Bearer ' + context.state.user.token
+                    }
+                };
+
+                axios.get('http://127.0.0.1:3000/api/bcaccounts/', opts).then(res => {
+                    console.log("RESPONSE:", {
+                        status: res.status,
+                        data: res.data.bcAccounts
+                    });
+
+                    context.commit('addBcAccounts', res.data.bcAccounts);
+                })
+                .catch(err => {
+                    console.log("RESPONSE:", {
+                        status: err.response.status,
+                        data: err.response.data
+                    });
+                });
+            }
         },
 
         // To do in API

@@ -19,6 +19,7 @@ let verifyToken = (req, res, next) => {
     // Get auth header value
     let bearerHeader = req.headers.authorization;
     // Check if bearer is not undefined
+    console.log('TOKEN FROM REQUEST:', bearerHeader);    
     if (typeof bearerHeader !== 'undefined') {
         // Split at the space
         // Bearer <access_token>
@@ -69,5 +70,6 @@ apiRouter.get('/users', verifyToken, userController.getAll);
 apiRouter.post('/auth/login', authController.login);
 
 apiRouter.get('/bcaccounts/currentCounter', bcaccountsController.getCurrentCounter);
+apiRouter.get('/bcaccounts', verifyToken, bcaccountsController.getAccounts);
 
 module.exports = apiRouter;

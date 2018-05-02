@@ -4,7 +4,7 @@ const BCAccount = require('../../models/BCAccount');
 
 /*********************************************************************************
 * Web service: Get the number of blockchain user accounts in the database
-* URI: /api/user
+* URI: /api/user/bcaccounts/currentCounter
 * Method: GET
 */
 let getCurrentCounter = (req, res) => {

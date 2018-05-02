@@ -52,7 +52,8 @@
 
 <script>
 
-const axios = require('axios');
+import { mapGetters, mapActions} from 'vuex';
+import { store } from '../store/store';
 
 export default {
     data () {
@@ -61,22 +62,23 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters([
+            'getUser',
+            'getErrorMessage'
+        ])
+    },
+
+    store,
+
     methods: {
         submit () {
-            var self = this;
-            axios.post('http://127.0.0.1:3000/api/user/create', {
-                hash: this.$data.hash,
-            })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (err) {
-                if (err.response.status == 500)
-                    self.error = "El usuario no se ha podido crear";
-                else if (err.response.status == 409)
-                    self.error = "Ya se a creado un usuario con este email";
-            });
-        }
+            this.$state.dispatch('getUserInfo');
+        },
+
+        ...mapActions([
+            'getUserInfo'
+        ])
     }
 }
 </script>
