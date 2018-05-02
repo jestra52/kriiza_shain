@@ -22,7 +22,7 @@ let getById = (req, res) => {
             throw err;
         }
 
-        if (!userData) return res.status(404).send({
+        if (!userData) return res.status(404).json({
             success: false,
             message: 'The user does not exist'
         });

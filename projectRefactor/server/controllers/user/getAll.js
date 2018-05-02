@@ -22,7 +22,7 @@ let getAll = (req, res) => {
             throw err;
         }
 
-        if (!users) return res.status(404).send({
+        if (!users) return res.status(404).json({
             success: false,
             message: 'There are no users available'
         });

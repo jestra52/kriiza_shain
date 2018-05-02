@@ -7,21 +7,21 @@
                     <th>
                         <router-link to="/">
                             <a class="btn btn-light">
-                                <span class="btn btn-light btnProfile">Inicio</span> 
+                                <span class="btn btn-light btnProfile">Inicio</span>
                             </a>
                         </router-link>
                     </th>
                     <th>
                         <router-link to="/login">
                             <a class="btn btn-light btnProfile">
-                                <span class="btn btn-light">Iniciar sesión</span> 
+                                <span class="btn btn-light">Iniciar sesión</span>
                             </a>
                         </router-link>
                     </th>
                     <th>
                         <router-link to="/signup">
                             <a class="btn btn-light btnProfile">
-                                <span class="btn btn-light">Crear cuenta</span> 
+                                <span class="btn btn-light">Crear cuenta</span>
                             </a>
                         </router-link>
                     </th>
@@ -29,8 +29,11 @@
             </table>
         </div>
         <h3>Nuevo usuario</h3>
-        <div class="alert alert-danger" v-if="error">
-            <p>{{ error }}</p>
+        <div class="alert alert-danger" v-if="getErrorMessage.message">
+            <p>{{ getErrorMessage.message }}</p>
+        </div>
+        <div class="alert alert-success" v-if="getUser.isLoggedIn != false">
+            <p>El usuario se ha registrado con la cuenta {{ getUser.data.bcAccount.accountHash }} de la red Blockchain</p>
         </div>
         <div id="box-signup">
             <input type="email" class="form-control" id="email" v-model="email" placeholder="Email">
@@ -39,8 +42,11 @@
             <input type="text" class="form-control" id="lastName" v-model="lastName" placeholder="Apellido">
         </div>
         <div id="btnLogin">
-            <button class="btn btn-primary btn-form" @click="submit()">crear cuenta</button>
+            <button class="btn btn-primary btn-form" @click="submit()">Crear cuenta</button>
         </div>
+
+
+
         <p id="demo"></p>
         <div  id="botBar">
             <h5 id="creado"> Creado por la compañia Kriiza </h5>
@@ -57,10 +63,10 @@
 
 <script>
 
-const Web3 = require('web3');
-const web3 = new Web3();
-const axios = require('axios');
-web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:7545'));
+import { mapGetters, mapActions} from 'vuex';
+import { store } from '../store/store';
+import axios from 'axios';
+
 export default {
     data () {
         return {
@@ -68,35 +74,54 @@ export default {
             password: '',
             firstName: '',
             lastName: '',
-            error: ''
+            error: '',
+            success: ''
         }
     },
-    
+
+    computed: {
+        ...mapGetters([
+            'getUser',
+            'getErrorMessage'
+        ])
+    },
+
+    store,
+
     methods: {
-        submit () { 
-            var self = this;           
-            var currentAccount = axios.get('http://127.0.0.1:3000/api/bcaccounts/currentCounter').then(function(response){
-            axios.post('http://127.0.0.1:3000/api/user/create', {
-                email: this.$data.email,
-                password: this.$data.password,
-                firstName: this.$data.firstName,
-                lastName: this.$data.lastName,
-                bcAccount: web3.eth.accounts[response.data.currentAccount]
+        submit () {
+            axios.get('http://127.0.0.1:3000/api/bcaccounts/currentCounter').then(res => {
+                //console.log('CURRENT ETHEREUM ACCOUNT:', web3.eth.accounts[res.data.currentCounter]);
+                // Passing the userdata in an object as payload to the signup action
+                this.$store.dispatch('signUp', {
+                    email: this.$data.email,
+                    password: this.$data.password,
+                    firstName: this.$data.firstName,
+                    lastName: this.$data.lastName,
+                    bcAccount: res.data.currentCounter
+                });
             })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (err) {
-                console.log(err.response);
-                if (err.response.status == 500)
-                    self.error = "El usuario no se ha podido crear";
-                else if (err.response.status == 409)
-                    self.error = "Ya se a creado un usuario con este email";
+            .catch(err => {
+                if (err.response.status == 404 && !err.response.data.success) {
+                    //console.log('CURRENT ETHEREUM ACCOUNT:', web3.eth.accounts[0]);
+                    this.$store.dispatch('signUp', {
+                        email: this.$data.email,
+                        password: this.$data.password,
+                        firstName: this.$data.firstName,
+                        lastName: this.$data.lastName,
+                        bcAccount: 0
+                    });
+                }
             });
-            });
-        }
+
+        },
+
+        ...mapActions([
+            'signUp'
+        ])
     }
 }
+
 </script>
 
 <style scoped>
