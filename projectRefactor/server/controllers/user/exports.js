@@ -3,5 +3,6 @@
 module.exports = {
     create: require('./create'),
     getById: require('./getById'),
-    getAll: require('./getAll')
+    getAll: require('./getAll'),
+    update: require('./update')
 };

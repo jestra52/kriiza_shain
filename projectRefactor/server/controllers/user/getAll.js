@@ -34,7 +34,10 @@ let getAll = (req, res) => {
                 email: users[i].email,
                 firstName: users[i].firstName,
                 lastName: users[i].lastName,
-                createdAt: users[i].createdAt
+                bcTransactions: users[i].bcTransactions,
+                bcAccount: users[i].bcAccount,
+                createdAt: users[i].createdAt,
+                updatedAt: users[i].updatedAt
             });
 
         return res.status(200).json({
