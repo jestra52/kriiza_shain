@@ -60,14 +60,44 @@
 // engine.start() */
 const Web3 = require('web3');
 const web3 = new Web3();
+const BCAccount = require('./models/BCAccount');
+const mongoose = require('mongoose');
+const config = require('./config/config');
 web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:7545'));
-
-function pene(){
-    for(var i = 0;i<99;i++){
-        console.log(web3.eth.accounts[i]);
+mongoose.connect(config.db, (err, res) => {
+    if (err) {
+        console.error('Error connecting to database');
+        throw err;
     }
+
+    var databaseResponse = {
+        dbHost: res.host,
+        dbPort: res.port,
+        dbUserConnected: res.user,
+    };
     
-}
-pene();
+    console.log('Connected to database', config.db);
+    console.log('Database response:', databaseResponse);
+});
+
+BCAccount.findOne().sort({ 'createdAt': -1 }).exec((err, bcAccounts) => {
+    if (err) {
+        throw err;
+    }
+
+    if (!bcAccounts){
+        console.log("No hay");
+    }
+    console.log(bcAccounts);
+});
+
+console.log(web3.eth.accounts[0]);
+
+// function pene(){
+//     for(var i = 0;i<99;i++){
+//         console.log(web3.eth.accounts[i]);
+//     }
+// }
+// pene();
 
 

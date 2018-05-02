@@ -33,7 +33,7 @@
             <p>{{ error }}</p>
         </div>
         <div id="box-signup">
-            <input type="text" class="form-control" id="email" v-model="email" placeholder="Email">
+            <input type="email" class="form-control" id="email" v-model="email" placeholder="Email">
             <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña">
             <input type="text" class="form-control" id="firstName" v-model="firstName" placeholder="Nombre">
             <input type="text" class="form-control" id="lastName" v-model="lastName" placeholder="Apellido">
@@ -57,8 +57,10 @@
 
 <script>
 
+const Web3 = require('web3');
+const web3 = new Web3();
 const axios = require('axios');
-
+web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:7545'));
 export default {
     data () {
         return {
@@ -73,20 +75,24 @@ export default {
     methods: {
         submit () { 
             var self = this;           
+            var currentAccount = axios.get('http://127.0.0.1:3000/api/bcaccounts/currentCounter').then(function(response){
             axios.post('http://127.0.0.1:3000/api/user/create', {
-                username: this.$data.email,
+                email: this.$data.email,
                 password: this.$data.password,
                 firstName: this.$data.firstName,
-                lastName: this.$data.lastName
+                lastName: this.$data.lastName,
+                bcAccount: web3.eth.accounts[response.data.currentAccount]
             })
             .then(function (response) {
                 console.log(response);
             })
             .catch(function (err) {
+                console.log(err.response);
                 if (err.response.status == 500)
                     self.error = "El usuario no se ha podido crear";
                 else if (err.response.status == 409)
                     self.error = "Ya se a creado un usuario con este email";
+            });
             });
         }
     }

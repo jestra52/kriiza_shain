@@ -30,6 +30,8 @@
     "file-loader": "^1.1.4",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
+    "web3": "github:ethereum/web3.js",
+    "web3-provider-engine": "^14.0.5",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   }
