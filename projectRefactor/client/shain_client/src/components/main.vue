@@ -1,4 +1,4 @@
- <template>   
+<template>
     <div id="main">
          <div id="login" class="form-login">
             <div id="topBar">
@@ -8,21 +8,21 @@
                         <th>
                             <router-link to="/">
                                 <a class="btn btn-light">
-                                    <span class="btn btn-light btnProfile">Inicio</span> 
+                                    <span class="btn btn-light btnProfile">Inicio</span>
                                 </a>
                             </router-link>
                         </th>
                         <th>
                             <router-link to="/login">
                                 <a class="btn btn-light btnProfile">
-                                    <span class="btn btn-light">Iniciar sesión</span> 
+                                    <span class="btn btn-light">Iniciar sesión</span>
                                 </a>
                             </router-link>
                         </th>
                         <th>
                             <router-link to="/signup">
                                 <a class="btn btn-light btnProfile">
-                                    <span class="btn btn-light">Crear cuenta</span> 
+                                    <span class="btn btn-light">Crear cuenta</span>
                                 </a>
                             </router-link>
                         </th>
@@ -60,10 +60,10 @@ export default {
             hash: ''
         }
     },
-    
+
     methods: {
-        submit () { 
-            var self = this;           
+        submit () {
+            var self = this;
             axios.post('http://127.0.0.1:3000/api/user/create', {
                 hash: this.$data.hash,
             })

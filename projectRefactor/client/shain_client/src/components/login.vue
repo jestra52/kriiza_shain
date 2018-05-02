@@ -7,21 +7,21 @@
                     <th>
                         <router-link to="/">
                             <a class="btn btn-light">
-                                <span class="btn btn-light btnProfile">Inicio</span> 
+                                <span class="btn btn-light btnProfile">Inicio</span>
                             </a>
                         </router-link>
                     </th>
                     <th>
                         <router-link to="/login">
                             <a class="btn btn-light btnProfile">
-                                <span class="btn btn-light">Iniciar sesión</span> 
+                                <span class="btn btn-light">Iniciar sesión</span>
                             </a>
                         </router-link>
                     </th>
                     <th>
                         <router-link to="/signup">
                             <a class="btn btn-light btnProfile">
-                                <span class="btn btn-light">Crear cuenta</span> 
+                                <span class="btn btn-light">Crear cuenta</span>
                             </a>
                         </router-link>
                     </th>
@@ -29,9 +29,10 @@
             </table>
         </div>
         <h3>Ingrese con su cuenta</h3>
-        <div class="alert alert-danger" v-if="error">
-            <p>{{ error }}</p>
+        <div class="alert alert-danger" v-if="getErrorMessage.data">
+            <p>{{ getErrorMessage.data }}</p>
         </div>
+
         <div id="box-login">
             <input type="text" class="form-control" id="email" v-model="email" placeholder="Email">
             <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña">
@@ -39,6 +40,12 @@
         <div id="btnLogin">
             <button class="btn btn-primary" @click="submit()">Ingresar</button>
         </div>
+
+
+        <div>User state
+            {{ getUser }}
+        </div>
+
         <p id="demo"></p>
         <div  id="botBar">
             <h5 id="creado"> Creado por la compañia Kriiza </h5>
@@ -54,8 +61,10 @@
 </template>
 
 <script>
-const axios = require('axios');
-import {mapActions} from 'vuex';
+
+import { mapGetters, mapActions} from 'vuex';
+import { store } from '../store/store';
+
 export default {
     data () {
         return {
@@ -64,29 +73,31 @@ export default {
             error: ''
         }
     },
-    
+
+    computed: {
+        ...mapGetters([
+            'getUser',
+            'getErrorMessage'
+        ])
+    },
+
+    store,
+
     methods: {
-        submit () { 
-            var self = this;           
-            axios.post('http://127.0.0.1:3000/api/auth/login', {
+        submit () {
+            // Passing the email and password in an object as payload to the login action
+            this.$store.dispatch('login', {
                 email: this.$data.email,
                 password: this.$data.password
-            })
-            .then(function (response) {
-                makeToken(response.token);
-                router.push('/index')
-            })
-            .catch(function (err) {
-                if (err.response.status == 404 && !err.response.data.success)
-                    self.error = "El usuario no existe";
             });
-            
         },
+
         ...mapActions([
-            'makeToken'
+            'login'
         ])
     }
 }
+
 </script>
 
 <style scoped>

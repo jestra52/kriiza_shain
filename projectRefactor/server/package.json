@@ -32,6 +32,8 @@
     "morgan": "^1.9.0",
     "nodemon": "^1.17.3",
     "normalize-path": "^3.0.0",
+    "web3": "github:ethereum/web3.js",
+    "web3-provider-engine": "^14.0.5",
     "zeppelin-solidity": "^1.8.0"
   }
 }
