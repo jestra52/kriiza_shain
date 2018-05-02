@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 
 let BCTransaction = new mongoose.Schema({
 
-    chainAccount: { type: String },
-    from: { type: String},
+    transactionInfo: { type: Object, required: true } ,
+    createdAt: { type: Date, required: true },
+    updatedAt: { type: Date, required: true }
 
 });
 
