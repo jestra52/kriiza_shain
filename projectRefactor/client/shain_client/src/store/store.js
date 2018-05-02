@@ -41,6 +41,11 @@ export const store = new Vuex.Store({
             state.user.isLoggedIn = true;
         },
 
+        removeWebToken: (state) => {
+            state.user.token = '';
+            state.user.isLoggedIn = false;
+        },
+
         addUserData: (state, userData) => {
             state.user.data = userData;
         },
@@ -81,6 +86,14 @@ export const store = new Vuex.Store({
                     data: err.response.data
                 });
             });
+        },
+
+        // To do in API
+        logout: (context) => {
+            if (context.state.user.token) {
+                context.commit('removeWebToken');
+                context.commit('addUserData', {});
+            }
         },
 
         getUserInfo: (context, userInfo) => {
@@ -140,9 +153,6 @@ export const store = new Vuex.Store({
                 });
             }
         },
-
-        // To do in API
-        logout: () => {},
 
         signUp: (context, userInfo) => {
             axios.post('http://127.0.0.1:3000/api/user/create', {

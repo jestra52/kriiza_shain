@@ -168,7 +168,8 @@ export default {
 
         ...mapActions([
             'getUserInfo',
-            'getAllAccounts'
+            'getAllAccounts',
+            'logout'
         ])
     }
 }
