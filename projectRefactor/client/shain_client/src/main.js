@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import login from './components/login.vue'
 import signup from './components/signup.vue'
 import main from './components/main.vue'
-// import index from './components/index.vue'
+import transaction from './components/transaction.vue'
 
 Vue.use(Router)
 
@@ -19,13 +19,14 @@ var router = new Router({
       component: signup
     },
     {
+      path: '/transaction',
+      component: transaction
+    },
+    {
       path: '/',
       component: main
     }
-    // {
-    //     path: '/index',
-    //     component: index
-    // }
+    
   ]
 });
 

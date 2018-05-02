@@ -2,8 +2,9 @@
     <div id="login" class="form-login">
         <div id="topBar">
             <h3 id="titlePP">SHAIN</h3>
-            <table id="options" align="right" name="options">
-                <tr>
+            <table id="options" align="right" name="options">                
+                <tr v-if="getUser.isLoggedIn == false">
+                    <th>Hola</th>
                     <th>
                         <router-link to="/">
                             <a class="btn btn-light">
@@ -26,6 +27,17 @@
                         </router-link>
                     </th>
                 </tr>
+                <tr v-else> 
+                    <th> Hola! {{getUser.data.firstName}} {{getUser.data.lastName}}</th>
+                    <th>
+                        <router-link to="/transaction">
+                            <a class="btn btn-light btnProfile">
+                                <span class="btn btn-light">Transacciones</span>
+                            </a>
+                        </router-link>
+                    </th>
+                </tr>
+                
             </table>
         </div>
         <h3>Ingrese con su cuenta</h3>
