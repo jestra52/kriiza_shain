@@ -9,6 +9,8 @@ const User = require('../../models/User');
 */
 let getAll = (req, res) => {
 
+    res.header("Access-Control-Allow-Origin", "*");
+
     User.find({}, (err, users) => {
         if (err) {
             return res.status(500).json({
@@ -32,7 +34,10 @@ let getAll = (req, res) => {
                 email: users[i].email,
                 firstName: users[i].firstName,
                 lastName: users[i].lastName,
-                createdAt: users[i].createdAt
+                bcTransactions: users[i].bcTransactions,
+                bcAccount: users[i].bcAccount,
+                createdAt: users[i].createdAt,
+                updatedAt: users[i].updatedAt
             });
 
         return res.status(200).json({

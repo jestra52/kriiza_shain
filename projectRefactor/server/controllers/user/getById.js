@@ -9,6 +9,8 @@ const User = require('../../models/User');
 */
 let getById = (req, res) => {
 
+    res.header("Access-Control-Allow-Origin", "*");
+
     User.findById(req.params.id, (err, userData) => {
         if (err) {
             return res.status(500).json({

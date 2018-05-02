@@ -8,6 +8,8 @@ const User   = require('../../models/User');
 
 let login = (req, res) => {
 
+    res.header("Access-Control-Allow-Origin", "*");
+
     User.findOne({ username: req.body.username }, (err, userData) => {
         if (err) {
             return res.status(500).json({
