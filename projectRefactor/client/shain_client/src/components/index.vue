@@ -120,7 +120,8 @@ export default {
     
     methods: {
         logout () { 
-            makeToken('')
+            makeToken('');
+            router.push('/')
         },
         ...mapActions([
             'makeToken'

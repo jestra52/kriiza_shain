@@ -4,15 +4,13 @@ const User = require('../../models/User');
 
 
 /*********************************************************************************
- * Web service: Update the data of the current user (actual session)
+ * Web service: Update the data of given user
  * URI: /api/user/update
  * Method: PUT
  */
 let update = (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
 
-    // User from passport session
-    var userID = req.user._id; 
+    res.header("Access-Control-Allow-Origin", "*");
 
     // Setting actual time
     var date   = new Date();
@@ -21,34 +19,23 @@ let update = (req, res) => {
 
     // Data to update
     var dataToUpdate = req.body;
-    var steamID      = "";
-
-    if (dataToUpdate.birth) {
-        dataToUpdate.birth = new Date(req.body.birth).toISOString();
-    }
-
-    if (dataToUpdate.steamProfile) {
-        var protomatch   = /^(https?|ftp):\/\//; 
-        var steamProfile = req.body.steamProfile;
-        var cleanUrl     = steamProfile.replace(protomatch, '');
-        steamID          = cleanUrl.split('/')[2];
-    }
 
     if (dataToUpdate.wishList) {
-        User.findById(userID, (err, userData) => {
+        User.findById(req.params.id, (err, userData) => {
             if (err) {
-                return res.status(500).send({
-                    success: false,
-                    message: 'Error updating user: ' + err
+                return res.status(500).json({
+                    error: true,
+                    message: 'Error getting user',
+                    errors: err
                 });
+    
+                throw err;
             }
 
-            if (!userData) {
-                return res.status(400).send({
-                    success: false,
-                    message: 'The user does not exist'
-                });
-            }
+            if (!userData) return res.status(404).send({
+                success: false,
+                message: 'The user does not exist'
+            });
 
             for (var i = 0; i < dataToUpdate.wishList.length; i++) {
                 userData.wishList.push(dataToUpdate.wishList[i]);
