@@ -54,10 +54,8 @@
 </template>
 
 <script>
-
 const axios = require('axios');
 import {mapActions} from 'vuex';
-
 export default {
     data () {
         return {
@@ -76,6 +74,7 @@ export default {
             })
             .then(function (response) {
                 makeToken(response.token);
+                router.push('/index')
             })
             .catch(function (err) {
                 if (err.response.status == 404 && !err.response.data.success)
