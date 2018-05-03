@@ -22,9 +22,6 @@ let getAll = (req, res) => {
             throw err;
         }
 
-        console.log(transactions);
-        
-
         if (transactions.length == 0) return res.status(404).json({
             success: false,
             message: 'There are no transactions available'
@@ -46,7 +43,9 @@ let getAll = (req, res) => {
             transactionsData.push({
                 transactionInfo: {
                     transactionOwner: transactions[i].transactionInfo.transactionOwner,
+                    transactionOwnerName: transactions[i].transactionInfo.transactionOwnerName,
                     to: transactions[i].transactionInfo.to,
+                    toName: transactions[i].transactionInfo.toName,
                     content: transactions[i].transactionInfo.content
                 },
                 transactionHash: transactions[i].transactionHash,

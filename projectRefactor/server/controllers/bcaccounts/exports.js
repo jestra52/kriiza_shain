@@ -2,5 +2,6 @@
 
 module.exports = {
     getCurrentCounter: require('./getCurrentCounter'),
-    getAccounts: require('./getAccounts')
+    getAccounts: require('./getAccounts'),
+    updateTransaction: require('./updateTransactions')
 };

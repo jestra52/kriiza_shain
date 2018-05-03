@@ -20,7 +20,7 @@ let verifyToken = (req, res, next) => {
     // Get auth header value
     let bearerHeader = req.headers.authorization;
     // Check if bearer is not undefined
-    console.log('TOKEN FROM REQUEST:', bearerHeader);    
+    //console.log('TOKEN FROM REQUEST:', bearerHeader);    
     if (typeof bearerHeader !== 'undefined') {
         // Split at the space
         // Bearer <access_token>
@@ -65,6 +65,7 @@ let verifyToken = (req, res, next) => {
 //apiRouter.all('/users', verifyToken);
 
 apiRouter.get('/user/:id', verifyToken, userController.getById);
+apiRouter.get('/users/getbyaccount', verifyToken, userController.getByAccount);
 apiRouter.post('/user/create', userController.create);
 apiRouter.get('/users', verifyToken, userController.getAll);
 

@@ -1,7 +1,11 @@
 'use strict';
 
+const axios = require('axios');
+
+const config        = require('../../config/config');
 const User          = require('../../models/User');
 const BCTransaction = require('../../models/BCTransaction');
+const BCAccount     = require('../../models/BCAccount');
 
 /*********************************************************************************
  * Web service: Update the data of the given user and create a transaction
@@ -36,67 +40,105 @@ let create = (req, res) => {
             let date   = new Date();
             let offset = date.getTimezoneOffset();
             date.setMinutes(date.getMinutes() - offset);
-            
-            let transactionToCreate = new BCTransaction();
 
-            transactionToCreate.transactionInfo.to      = req.body.transactionInfo.to;
-            transactionToCreate.transactionInfo.content = req.body.transactionInfo.content;
-            transactionToCreate.parentTransactionHash   = req.body.parentTransactionHash;
-
-            transactionToCreate.transactionHash = req.body.transactionHash;
-            transactionToCreate.createdAt       = date.toISOString();
-            transactionToCreate.updatedAt       = date.toISOString();
-
-            User.findById(req.params.id, (errU, userData) => {
-                if (errU) {
+            BCAccount.findOne({ 
+                accountHash: req.body.transactionInfo.to 
+            }, 
+            (errAc, accountData) => {
+                if (errAc) {
                     return res.status(500).json({
                         error: true,
-                        message: 'Error getting transaction',
-                        errors: errU
+                        message: 'Error getting account',
+                        errors: errAc
                     });
         
-                    throw errU;
+                    throw errAc;
                 }
 
-                if (!userData) return res.status(404).json({
+                if (!accountData) return res.status(404).json({
                     success: false,
-                    message: 'The user does not exist'
+                    message: 'Destiny account does not exist'
                 });
+                else {
 
-                transactionToCreate.transactionInfo
-                                   .transactionOwner = userData.firstName + ' ' 
-                                                     + userData.lastName;
+                    
+                    let transactionToCreate = new BCTransaction();
 
-                transactionToCreate.save((errST, tsctnCreated) => {
+                    transactionToCreate.transactionInfo.to      = req.body.transactionInfo.to;
+                    transactionToCreate.transactionInfo.toName  = req.body.transactionInfo.toName;
+                    transactionToCreate.transactionInfo.content = req.body.transactionInfo.content;
+                    transactionToCreate.parentTransactionHash   = req.body.parentTransactionHash;
 
-                    userData.bcTransactions.push(tsctnCreated);
-                    userData.updatedAt = date.toISOString();
+                    transactionToCreate.transactionHash = req.body.transactionHash;
+                    transactionToCreate.createdAt       = date.toISOString();
+                    transactionToCreate.updatedAt       = date.toISOString();
 
-                    User.findByIdAndUpdate(req.params.id, userData, (err, userUpdated) => {
-                        if (err) {
+                    User.findById(req.params.id, (errU, userData) => {
+                        if (errU) {
                             return res.status(500).json({
                                 error: true,
-                                message: 'Error getting user',
-                                errors: err
+                                message: 'Error getting userData',
+                                errors: errU
                             });
                 
-                            throw err;
+                            throw errU;
                         }
-                
-                        if (!userUpdated) return res.status(404).send({
+
+                        if (!userData) return res.status(404).json({
                             success: false,
                             message: 'The user does not exist'
                         });
-    
-                        return res.status(200).json({
-                            success: true,
-                            message: 'Users successfully update ' +
-                                     'and transaction successfully created',
-                            transactionCreated: tsctnCreated
-                        });
-                    });
-                });             
 
+                        transactionToCreate.transactionInfo
+                                           .transactionOwner     = userData.bcAccount.accountHash;
+                        transactionToCreate.transactionInfo
+                                           .transactionOwnerName = userData.firstName + ' ' 
+                                                                 + userData.lastName;
+
+                        transactionToCreate.save((errST, tsctnCreated) => {
+
+                            userData.bcTransactions.push(tsctnCreated);
+                            userData.updatedAt = date.toISOString();
+
+                            User.findByIdAndUpdate(req.params.id, userData, (err, userUpdated) => {
+                                if (err) {
+                                    return res.status(500).json({
+                                        error: true,
+                                        message: 'Error getting user',
+                                        errors: err
+                                    });
+                        
+                                    throw err;
+                                }
+                        
+                                if (!userUpdated) return res.status(404).send({
+                                    success: false,
+                                    message: 'The user does not exist'
+                                });
+
+                                let data = {
+                                    accountHash: transactionToCreate.transactionInfo.to,
+                                    transaction: {
+                                        from: tsctnCreated.transactionInfo.transactionOwner,
+                                        fromName: tsctnCreated.transactionInfo.transactionOwnerName
+                                    }
+                                }
+
+                                return res.status(200).json({
+                                    success: true,
+                                    message: 'Users successfully update ' +
+                                            'and transaction successfully created',
+                                    transactionCreated: tsctnCreated,
+                                    accountUpdated: require('../bcaccounts/updateTransactions')(data)
+                                });
+                              
+
+                            });
+                        });
+
+                    });
+
+                }
             });
 
         }
