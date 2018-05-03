@@ -42,7 +42,7 @@
                                     <div class="panel-body">
                                         <h4 style="margin-top:44px;">Cafe</h4>
                                         <strong>Cantidad</strong>:
-                                        <span id="cafeVerde"></span> KG
+                                        <span id="cafeVerde">{{ getBalanceValue() }}</span> KG
                                         <br/>
                                         <br/>
                                         <h4>Enviar a</h4>
@@ -97,10 +97,6 @@
                 </div>
             </div>
 
-            <div>
-                {{ showInfo() }}
-            </div>
-
             <div id="bcAccounts">
                 <h2>Cuentas</h2>
                 <ul>
@@ -135,78 +131,76 @@ var truffleContract = require("truffle-contract");
 var Mycontract = truffleContract(contract);
 Mycontract.setProvider(provider);
 
-//getBalancesVerde(this);
-
 import { mapGetters, mapActions } from "vuex";
 import { store } from "../store/store";
 
 export default {
-  data() {
-    return {
-      hash: "",
-
-    };
-  },
-
-  /*data: {
-        hash: '',
-        balance: 'sdsd'
-    },*/
-
-  store,
-
-  computed: {
-    getBalancesVerde: () => {
-      console.log("Getting balances...");
-
-      var cafeVerdeInstance;
-      var self = this;
-
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
-
-        var account = accounts[0];
-
-        Mycontract.deployed()
-          .then(function(instance) {
-            cafeVerdeInstance = instance;
-            console.log(cafeVerdeInstance);
-            return cafeVerdeInstance.balanceOf(account);
-          })
-          .then(function(result) {
-            var balance = result.c[0];
-
-            console.log(balance);
-            //self.$data.balance = balance;
-            $("#cafeVerde").text(balance);
-          })
-          .catch(function(err) {
-            console.log(err.message);
-          });
-      });
+    data() {
+        return {
+            hash: '',
+            balance: 'dfdf'
+        };
     },
 
-    ...mapGetters([
-      "getUser",
-      "getErrorMessage",
-      "getBcAccounts",
-      "getTransactionInfo"
-    ])
-  },
+    store,
 
-  methods: {
-    submit() {
-      this.$store.dispatch("getAllAccounts");
+    computed: {
+        ...mapGetters([
+            "getUser",
+            "getErrorMessage",
+            "getBcAccounts",
+            "getTransactionInfo"
+        ])
     },
 
-    ...mapActions([
-      "getUserInfo",
-      "getAllAccounts",
-      "logout",
-      "currentTransactionInfo"
-    ])
-  }
+    methods: {
+        submit () {
+            this.$store.dispatch("getAllAccounts");
+        },
+
+        getBalanceValue () {
+            this.getBalancesVerde();
+            return this.balance;
+        },
+
+        getBalancesVerde () {
+            console.log("Getting balances...");
+
+            var cafeVerdeInstance;
+            var self = this;
+
+            web3.eth.getAccounts(function(error, accounts) {
+                if (error) {
+                    console.log(error);
+                }
+
+                var account = accounts[0];
+
+                Mycontract.deployed()
+                    .then(function(instance) {
+                        cafeVerdeInstance = instance;
+                        //console.log(cafeVerdeInstance);
+                        return cafeVerdeInstance.balanceOf(account);
+                    })
+                    .then(function(result) {
+                        var balance = result.c[0];
+                        self.balance = balance;
+                        self.$store.dispatch("currentTransactionInfo", {
+                            balance: balance
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err.message);
+                    });
+            });
+        },
+
+        ...mapActions([
+            "getUserInfo",
+            "getAllAccounts",
+            "logout",
+            "currentTransactionInfo"
+        ])
+    }
 };
 </script>

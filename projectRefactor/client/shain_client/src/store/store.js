@@ -106,11 +106,13 @@ export const store = new Vuex.Store({
                 context.commit('removeWebToken');
                 context.commit('addUserData', {});
                 context.commit('addUserData', {});
+                context.commit("addTransactionInfo", {});
+                context.commit("addError", {});
             }
         },
 
-        currentTransactionInfo: (context) => {
-            context.commit('addTransactionInfo');
+        currentTransactionInfo: (context, transactionInfo) => {
+            context.commit('addTransactionInfo', transactionInfo);
         },
 
         getUserInfo: (context, userInfo) => {
