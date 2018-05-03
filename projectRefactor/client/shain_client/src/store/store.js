@@ -20,7 +20,12 @@ export const store = new Vuex.Store({
             isLoggedIn: false,
             token: ''
         },
-        transactionInfo: {},
+        transactionInfo: {
+            balances: {
+                verde: 0,
+                tostado: 0
+            }
+        },
         errorMessage: {},
         bcAccounts: {}
     },
@@ -62,8 +67,16 @@ export const store = new Vuex.Store({
             state.bcAccounts = bcAccounts;
         },
 
-        addTransactionInfo: (state, tscinfo) => {
-            state.transactionInfo = tscinfo;
+        addBalanceVerde: (state, balanceVerde) => {
+            state.transactionInfo.balances.verde = balanceVerde;
+        },
+
+        addBalanceTostado: (state, balanceTostado) => {
+            state.transactionInfo.balances.tostado = balanceTostado;
+        },
+
+        addTransactionInfo: (state, transactionInfo) => {
+            state.transactionInfo = transactionInfo
         },
 
         addError: (state, errorMessage) => {
@@ -105,14 +118,20 @@ export const store = new Vuex.Store({
             if (context.state.user.token) {
                 context.commit('removeWebToken');
                 context.commit('addUserData', {});
-                context.commit('addUserData', {});
+                context.commit('addBcAccounts', null);
+                context.commit("addBalanceVerde", 0);
+                context.commit("addBalanceTostado", 0);
                 context.commit("addTransactionInfo", {});
                 context.commit("addError", {});
             }
         },
 
-        currentTransactionInfo: (context, transactionInfo) => {
-            context.commit('addTransactionInfo', transactionInfo);
+        currentBalanceVerde: (context, balanceVerde) => {
+            context.commit('addBalanceVerde', balanceVerde);
+        },
+
+        currentBalanceTostado: (context, balanceTostado) => {
+            context.commit('addBalanceTostado', balanceTostado);
         },
 
         getUserInfo: (context, userInfo) => {

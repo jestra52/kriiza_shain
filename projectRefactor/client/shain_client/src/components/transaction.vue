@@ -42,18 +42,17 @@
                                     <div class="panel-body">
                                         <h4 style="margin-top:44px;">Cafe</h4>
                                         <strong>Cantidad</strong>:
-                                        <span id="cafeVerde">{{ getBalanceValue() }}</span> KG
+                                        <span id="cafeVerde">{{ getBalanceVerdeValue() }}</span> KG
                                         <br/>
                                         <br/>
                                         <h4>Enviar a</h4>
-                                        <select class="form-control" id="destinoCafeVerde">
-                                            <option value="0xf17f52151EbEF6C7334FAD080c5704D77216b732">FEDERACIÓN DE CAFE</option>
-                                            <option value="0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef">INTERMEDIARIO 1</option>
-                                            <option value="0x821aEa9a577a9b44299B9c15c88cf3087F3b5544">INTERMEDIARIO 2</option>
-                                            <option value="0x0d1d4e623D10F9FBA5Db95830F7d3839406C6AF2">INTERMEDIARIO 3</option>
+                                        <select class="form-control" id="destinoCafeVerde" v-model="selectedVerde">
+                                            <option v-for="bcAccount in getBcAccounts" :key="bcAccount.id" v-bind:value="bcAccount.bcAccount" >
+                                                {{ bcAccount.owner }}
+                                            </option>
                                         </select>
-                                        <input type="text" class="form-control" id="cantidadCafeVerde" placeholder="Cantidad" style="margin-top:2%;" />
-                                        <button class="btn btn-primary" id="transferirCafeVerde" type="button" style="margin-top:2%;">Transferir</button>
+                                        <input type="text" class="form-control" id="cantidadCafeVerde" v-model="cantidadCafeVerde" placeholder="Cantidad" style="margin-top:2%;" />
+                                        <button class="btn btn-primary" id="transferirCafeVerde" type="button" @click="submitVerde()" style="margin-top:2%;">Transferir</button>
                                     </div>
                                 </div>
                             </td>
@@ -77,35 +76,23 @@
                                         </select>
                                         <h4>Cafe</h4>
                                         <strong>Cantidad</strong>:
-                                        <span id="cafeTostado"></span> KG
+                                        <span id="cafeTostado">{{ getBalanceTostadoValue() }}</span> KG
                                         <br/>
                                         <br/>
                                         <h4>Enviar a:</h4>
-                                        <select class="form-control" id="destinoCafeTostado">
-                                            <option value="0xf17f52151EbEF6C7334FAD080c5704D77216b732">FEDERACIÓN DE CAFE</option>
-                                            <option value="0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef">INTERMEDIARIO 1</option>
-                                            <option value="0x821aEa9a577a9b44299B9c15c88cf3087F3b5544">INTERMEDIARIO 2</option>
-                                            <option value="0x0d1d4e623D10F9FBA5Db95830F7d3839406C6AF2">INTERMEDIARIO 3</option>
+                                        <select class="form-control" id="destinoCafeTostado" v-model="selectedTostado">
+                                            <option v-for="bcAccount in getBcAccounts" :key="bcAccount.id" v-bind:value="bcAccount.bcAccount">
+                                                {{ bcAccount.owner }}
+                                            </option>
                                         </select>
-                                        <input type="text" class="form-control" id="cantidadCafeTostado" placeholder="Cantidad" style="margin-top:2%;" />
-                                        <button class="btn btn-primary" id="transferirCafeTostado" type="button" style="margin-top:2%;">Transferir</button>
+                                        <input type="text" class="form-control" id="cantidadCafeTostado" v-model="cantidadCafeTostado" placeholder="Cantidad" style="margin-top:2%;" />
+                                        <button class="btn btn-primary" id="transferirCafeTostado" type="button" @click="submitTostado()" style="margin-top:2%;">Transferir</button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                     </table>
                 </div>
-            </div>
-
-            <div id="bcAccounts">
-                <h2>Cuentas</h2>
-                <ul>
-                    <li v-for="bcAccount in getBcAccounts" :key="bcAccount.id" >
-                        <span class="owner">Propietario: {{ bcAccount.owner }}</span><br>
-                        <span class="accountHash">Cuenta BC: {{ bcAccount.bcAccount }}</span>
-                    </li>
-                </ul>
-                <button class="btn btn-primary btn-form" v-on:click="submit()">Ver cuentas</button>
             </div>
 
         </div>
@@ -124,83 +111,185 @@
 <script>
 const Web3 = require("web3");
 const web3 = new Web3();
-const contract = require("../../build/contracts/CafeVerde.json");
+const contractVerde = require("../../build/contracts/CafeVerde.json");
+const contractTostado = require("../../build/contracts/CafeTostado.json");
 web3.setProvider(new web3.providers.HttpProvider("http://127.0.0.1:7545"));
 var provider = new Web3.providers.HttpProvider("http://localhost:7545");
 var truffleContract = require("truffle-contract");
-var Mycontract = truffleContract(contract);
-Mycontract.setProvider(provider);
+var MycontractVerde = truffleContract(contractVerde);
+var MycontractTostado = truffleContract(contractTostado);
+MycontractVerde.setProvider(provider);
+MycontractTostado.setProvider(provider);
 
 import { mapGetters, mapActions } from "vuex";
 import { store } from "../store/store";
 
 export default {
-    data() {
-        return {
-            hash: '',
-            balance: 'dfdf'
-        };
+  data() {
+    return {
+      hash: "",
+      balanceVerde: "",
+      balanceTostado: "",
+      cantidadCafeVerde: "",
+      selectedVerde: "",
+      cantidadCafeTostado: "",
+      selectedTostado: ""
+    };
+  },
+
+  store,
+
+  computed: {
+    ...mapGetters([
+      "getUser",
+      "getErrorMessage",
+      "getBcAccounts",
+      "getTransactionInfo"
+    ])
+  },
+
+  methods: {
+    begin: function() {
+      this.$store.dispatch("getAllAccounts");
     },
-
-    store,
-
-    computed: {
-        ...mapGetters([
-            "getUser",
-            "getErrorMessage",
-            "getBcAccounts",
-            "getTransactionInfo"
-        ])
+    getBalanceVerdeValue() {
+      this.getBalancesVerde();
+      return this.balanceVerde;
     },
+    getBalanceTostadoValue() {
+      this.getBalancesTostado();
+      return this.balanceTostado;
+    },
+    submitVerde() {
+      var amount = this.$data.cantidadCafeVerde;
+      var toAddress = this.$data.selectedVerde;
 
-    methods: {
-        submit () {
-            this.$store.dispatch("getAllAccounts");
-        },
+      console.log("Transfer " + amount + " TT to " + toAddress);
 
-        getBalanceValue () {
-            this.getBalancesVerde();
-            return this.balance;
-        },
+      var cafeVerdeInstance;
+      var self = this;
 
-        getBalancesVerde () {
-            console.log("Getting balances...");
+      web3.eth.getAccounts(function(error, accounts) {
+        if (error) {
+          console.log(error);
+        }
 
-            var cafeVerdeInstance;
-            var self = this;
-
-            web3.eth.getAccounts(function(error, accounts) {
-                if (error) {
-                    console.log(error);
-                }
-
-                var account = accounts[0];
-
-                Mycontract.deployed()
-                    .then(function(instance) {
-                        cafeVerdeInstance = instance;
-                        //console.log(cafeVerdeInstance);
-                        return cafeVerdeInstance.balanceOf(account);
-                    })
-                    .then(function(result) {
-                        var balance = result.c[0];
-                        self.balance = balance;
-                        self.$store.dispatch("currentTransactionInfo", {
-                            balance: balance
-                        });
-                    })
-                    .catch(function(err) {
-                        console.log(err.message);
-                    });
+        var account = self.$store.state.user.data.bcAccount.accountHash;
+        MycontractVerde.deployed()
+          .then(function(instance) {
+            cafeVerdeInstance = instance;
+            return cafeVerdeInstance.transfer(toAddress, amount, {
+              from: account
             });
-        },
+          })
+          .then(function(result) {
+            alert("Transfer Successful!");
+            self.getBalancesVerde();
+          })
+          .catch(function(err) {
+            console.log(err.message);
+          });
+      });
+    },
+    submitTostado() {
+      var amount = this.$data.cantidadCafeTostado;
+      var toAddress = this.$data.selectedTostado;
 
-        ...mapActions([
-            "getUserInfo",
-            "getAllAccounts",
-            "logout",
-            "currentTransactionInfo"
-        ])
-    }
+      console.log("Transfer " + amount + " TT to " + toAddress);
+
+      var cafeTostadoInstance;
+      var self = this;
+
+      web3.eth.getAccounts(function(error, accounts) {
+        if (error) {
+          console.log(error);
+        }
+
+        var account = self.$store.state.user.data.bcAccount.accountHash;
+        MycontractTostado.deployed()
+          .then(function(instance) {
+            cafeTostadoInstance = instance;
+            return cafeTostadoInstance.transfer(toAddress, amount, {
+              from: account
+            });
+          })
+          .then(function(result) {
+            alert("Transfer Successful!");
+            self.getBalancesTostado();
+          })
+          .catch(function(err) {
+            console.log(err.message);
+          });
+      });
+    },
+    getBalancesVerde() {
+      console.log("Getting balances...");
+      console.log(this.$data.selectedVerde);
+      var cafeVerdeInstance;
+      var self = this;
+
+      web3.eth.getAccounts(function(error, accounts) {
+        if (error) {
+          console.log(error);
+        }
+        var account = self.$store.state.user.data.bcAccount.accountHash;
+
+        MycontractVerde.deployed()
+          .then(function(instance) {
+            cafeVerdeInstance = instance;
+            //console.log(cafeVerdeInstance);
+            return cafeVerdeInstance.balanceOf(account);
+          })
+          .then(function(result) {
+            var balance = result.c[0];
+            self.balanceVerde = balance;
+            self.$store.dispatch("currentBalanceVerde", balance);
+          })
+          .catch(function(err) {
+            console.log(err.message);
+          });
+      });
+    },
+    getBalancesTostado() {
+      console.log("Getting balances...");
+
+      var cafeTostadoInstance;
+      var self = this;
+
+      web3.eth.getAccounts(function(error, accounts) {
+        if (error) {
+          console.log(error);
+        }
+
+        var account = self.$store.state.user.data.bcAccount.accountHash;
+        MycontractTostado.deployed()
+          .then(function(instance) {
+            cafeTostadoInstance = instance;
+            return cafeTostadoInstance.balanceOf(account);
+          })
+          .then(function(result) {
+            var balance = result.c[0];
+            console.log(balance);
+
+            self.balanceTostado = balance;
+            self.$store.dispatch("currentBalanceTostado", balance);
+          })
+          .catch(function(err) {
+            console.log(err.message);
+          });
+      });
+    },
+
+    ...mapActions([
+      "getUserInfo",
+      "getAllAccounts",
+      "logout",
+      "currentBalanceTostado",
+      "currentBalanceVerde"
+    ])
+  },
+  beforeMount() {
+    this.begin();
+  }
 };
 </script>
