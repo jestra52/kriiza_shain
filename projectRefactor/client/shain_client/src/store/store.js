@@ -26,8 +26,10 @@ export const store = new Vuex.Store({
                 tostado: 0
             }
         },
+        transactions: {},
         errorMessage: {},
-        bcAccounts: {}
+        bcAccounts: {},
+        bcAccountData: {}
     },
 
     getters: {
@@ -43,8 +45,16 @@ export const store = new Vuex.Store({
             return state.bcAccounts;
         },
 
+        getBcAccountData: (state) => {
+            return state.bcAccountData;
+        },
+
         getTransactionInfo: (state) => {
             return state.transactionInfo;
+        },
+
+        getAllTransactions: (state) => {
+            return state.transactions;
         }
     },
 
@@ -67,6 +77,10 @@ export const store = new Vuex.Store({
             state.bcAccounts = bcAccounts;
         },
 
+        addBcAccountData: (state, bcAccount) => {
+            state.bcAccountData = bcAccount;
+        },
+
         addBalanceVerde: (state, balanceVerde) => {
             state.transactionInfo.balances.verde = balanceVerde;
         },
@@ -76,7 +90,11 @@ export const store = new Vuex.Store({
         },
 
         addTransactionInfo: (state, transactionInfo) => {
-            state.transactionInfo = transactionInfo
+            state.transactionInfo = transactionInfo;
+        },
+
+        addTotalTransactions: (state, transactions) => {
+            state.transactions = transactions;
         },
 
         addError: (state, errorMessage) => {
@@ -118,10 +136,12 @@ export const store = new Vuex.Store({
             if (context.state.user.token) {
                 context.commit('removeWebToken');
                 context.commit('addUserData', {});
-                context.commit('addBcAccounts', null);
+                context.commit('addBcAccounts', {});
+                context.commit('addBcAccountData', {});
                 context.commit("addBalanceVerde", 0);
                 context.commit("addBalanceTostado", 0);
                 context.commit("addTransactionInfo", {});
+                context.commit('addTotalTransactions', {});
                 context.commit("addError", {});
             }
         },
@@ -192,6 +212,90 @@ export const store = new Vuex.Store({
             }
         },
 
+        getTransactions: (context) => {
+            axios.get('http://127.0.0.1:3000/api/bctransactions').then(res => {
+                console.log("RESPONSE:", {
+                    status: res.status,
+                    data: res.data.transactions
+                });
+
+                context.commit('addTotalTransactions', res.data.transactions);
+            })
+            .catch(err => {
+                console.log("RESPONSE:", {
+                    status: err.response.status,
+                    data: err.response.data
+                });
+            });
+        },
+
+        getAccountByUserId: (context) => {
+            if (!context.state.user.isLoggedIn) {
+                console.log('USER NOT AUTHENTICATED');
+            }
+            else {
+                let id   = context.state.user.data._id;
+                let opts = {
+                    headers: {
+                        'Authorization': 'Bearer ' + context.state.user.token
+                    }
+                };
+
+                axios.get('http://127.0.0.1:3000/api/bcaccount/' + id, opts)
+                .then(res => {
+                    console.log("RESPONSE:", {
+                        status: res.status,
+                        data: res.data.accountData
+                    });
+
+                    context.commit('addBcAccountData', res.data.accountData);
+                })
+                .catch(err => {
+                    console.log("RESPONSE:", {
+                        status: err.response.status,
+                        data: err.response.data
+                    });
+                });
+            }
+        },
+
+        createTransaction: (context, tsctn) => {
+            if (!context.state.user.isLoggedIn) {
+                console.log('USER NOT AUTHENTICATED');
+            }
+            else {
+                let id   = context.state.user.data._id;
+                let opts = {
+                    headers: {
+                        'Authorization': 'Bearer ' + context.state.user.token
+                    }
+                };
+                let data = {
+                    transactionInfo: {
+                        to: tsctn.to,
+                        toName: tsctn.toName,
+                        content: tsctn.content
+                    },
+                    transactionHash: tsctn.transactionHash,
+                    parentTransactionHash: tsctn.parentTransactionHash // Este es opcional
+                }
+
+                axios.put('http://127.0.0.1:3000/api/bctransactions/create/' + id, data, opts)
+                .then(res => {
+                    console.log("RESPONSE:", {
+                        status: res.status,
+                        data: res.data
+                    });
+                })
+                .catch(err => {
+                    console.log("RESPONSE:", {
+                        status: err.response.status,
+                        data: err.response.data
+                    });
+                });
+            }
+        },
+
         signUp: (context, userInfo) => {
             axios.post('http://127.0.0.1:3000/api/user/create', {
                     email: userInfo.email,
@@ -215,7 +319,7 @@ export const store = new Vuex.Store({
                         data: err.response.data
                     });
 
-                    if (err.response.status == 500 && err.response.data.error)
+                    /*if (err.response.status == 500 && err.response.data.error)
                         context.commit('addError', {
                             status: err.response.status,
                             message: "El usuario no se ha podido crear"
@@ -224,7 +328,7 @@ export const store = new Vuex.Store({
                         context.commit('addError', {
                             status: err.response.status,
                             message: "Ya se a creado un usuario con este email"
-                        });
+                        });*/
                 });
         }
     }

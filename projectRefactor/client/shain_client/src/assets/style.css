@@ -15,27 +15,27 @@ body {
       padding: 0;
       font-family: Helvetica, Arial, sans-serif;
       color: #666;
-      background: #f2f2f2; 
+      background: #f2f2f2;
       font-size: 1em;
       line-height: 1.5em;
-      
+
       padding-top: 80px;
   }
-  
+
   #title, #subtitle, #alert-danger{
     margin-left: auto;
     margin-right: auto;
     text-align: center;
   }
-  
+
   #alert-danger{
     width: 20%;
   }
-  
+
   #firstName, #lastName ,#email ,#password{
     margin-top: 1%;
   }
-  
+
   #btnLogin{
     margin-top: 20px;
     margin-left: auto;
@@ -44,7 +44,7 @@ body {
     text-align: inherit;
     justify-content: space-between;
   }
-  
+
   #titlePP, #options{
     display: inline-block;
   }
@@ -55,7 +55,7 @@ body {
     text-transform: capitalize;
     float: left;
   }
-  
+
   #options{
     margin-top: 1%;
     float: right;
@@ -64,32 +64,34 @@ body {
   #btn-form{
       float:left;
   }
-  
+
   #topBar{
+
     background: #666;
     color: white;
     height: 70px;
-  
+
     width: 100%;
     left: 0;
     top: 0;
     position: fixed;
+
   }
-  
+
   .btnProfile{
     color: white;
   }
-  
+
   #btnConfig{
     margin-top: 7px;
   }
-  
+
   #map{
     width: 100%;
     height: 400px;
   }
-  
-  
+
+
   #botBar {
     position: fixed;
     left: 0;
@@ -100,13 +102,13 @@ body {
     text-align: center;
     height: 40px;
   }
-  
+
   #creado{
     float: left;
     margin-left: 3%;
     margin-top: 1%;
   }
-  
+
   #infoBot{
     float: right;
     text-align: center;
@@ -130,7 +132,7 @@ body {
   #hash{
     width: 80%;
   }
-  
+
   #btnSaveRoute{
     float: center ;
     text-align: center;
@@ -139,4 +141,3 @@ body {
     width: 10%;
     margin-top: 1%;
   }
-  

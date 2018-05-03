@@ -118,7 +118,8 @@ let create = (req, res) => {
                                     accountHash: transactionToCreate.transactionInfo.to,
                                     transaction: {
                                         from: tsctnCreated.transactionInfo.transactionOwner,
-                                        fromName: tsctnCreated.transactionInfo.transactionOwnerName
+                                        fromName: tsctnCreated.transactionInfo.transactionOwnerName,
+                                        content: tsctnCreated.transactionInfo.content
                                     }
                                 }
 

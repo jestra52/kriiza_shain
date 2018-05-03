@@ -28,6 +28,7 @@ function updateTransaction (transInfo, cb)  {
             accountData.transactionsReceived.push({
                 from: transInfo.transaction.from,
                 fromName: transInfo.transaction.fromName,
+                content: transInfo.transaction.content
             });
 
             User.findOne({ 'bcAccount.accountHash': accountData.accountHash }, 

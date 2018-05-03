@@ -73,6 +73,7 @@ apiRouter.post('/auth/login', authController.login);
 
 apiRouter.get('/bcaccounts/currentCounter', bcaccountsController.getCurrentCounter);
 apiRouter.get('/bcaccounts', verifyToken, bcaccountsController.getAccounts);
+apiRouter.get('/bcaccount/:id', verifyToken, bcaccountsController.getAccountByUserId);
 
 apiRouter.put('/bctransactions/create/:id', verifyToken, bctsctnController.create);
 apiRouter.get('/bctransactions/', bctsctnController.getAll);

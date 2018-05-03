@@ -1,27 +1,5 @@
 <template>
     <div id="transaction">
-        <div id="topBar">
-            <h3 id="titlePP">SHAIN</h3>
-            <table id="options" align="right" name="options">
-                <tr>
-                    <th> Hola! {{getUser.data.firstName}} {{getUser.data.lastName}}</th>
-                    <th>
-                        <router-link to="/transaction">
-                            <a class="btn btn-light btnProfile">
-                                <span class="btn btn-light">Transacciones</span>
-                            </a>
-                        </router-link>
-
-                        <router-link to="/">
-                            <a class="btn btn-light btnProfile">
-                                <span class="btn btn-light" @click="logout()">Cerrar sesión</span>
-                            </a>
-                        </router-link>
-                    </th>
-                </tr>
-
-            </table>
-        </div>
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-push-2">
@@ -95,16 +73,6 @@
                 </div>
             </div>
 
-        </div>
-        <div  id="botBar">
-            <h5 id="creado"> Creado por la compañia Kriiza </h5>
-            <table id="infoBot">
-                <tr>
-                    <th id="derechos">
-                        <h5>Todos los derechos reservados   2018</h5>
-                    </th>
-                </tr>
-            </table>
         </div>
     </div>
 </template>
