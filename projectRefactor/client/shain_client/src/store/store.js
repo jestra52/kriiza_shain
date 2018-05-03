@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import axios from 'axios';
 import Web3 from 'web3';
 
@@ -10,6 +11,8 @@ web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:7545'));
 
 export const store = new Vuex.Store({
     strict: true,
+
+    plugins: [ createPersistedState() ],
 
     state: {
         user: {
@@ -92,6 +95,7 @@ export const store = new Vuex.Store({
         logout: (context) => {
             if (context.state.user.token) {
                 context.commit('removeWebToken');
+                context.commit('addUserData', {});
                 context.commit('addUserData', {});
             }
         },
