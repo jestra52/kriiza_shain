@@ -8,7 +8,7 @@ const User = require('../../models/User');
  * URI: /api/user/update
  * Method: PUT
  */
-let update = (req, res) => {
+/*let update = (req, res) => {
 
     res.header("Access-Control-Allow-Origin", "*");
 
@@ -70,4 +70,4 @@ let update = (req, res) => {
     });
 };
 
-module.exports = update;
+module.exports = update;*/
