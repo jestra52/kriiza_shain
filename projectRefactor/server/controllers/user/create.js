@@ -65,7 +65,6 @@ let create = (req, res) => {
                     let bcaToCreate = new BCAccount();
                     let lastAccounCreatedCounter = 1;
                     
-                    console.log(bcaData);
                     if (bcaData && bcaData.lastAccounCreatedCounter) {
                         
                         if (bcaData.accountHash == req.body.bcAccount) 

@@ -1,7 +1,5 @@
 'use strict';
 
-const axios = require('axios');
-
 const config        = require('../../config/config');
 const User          = require('../../models/User');
 const BCTransaction = require('../../models/BCTransaction');
@@ -124,12 +122,13 @@ let create = (req, res) => {
                                     }
                                 }
 
+                                require('../bcaccounts/updateTransactions')(data)
+
                                 return res.status(200).json({
                                     success: true,
                                     message: 'Users successfully update ' +
                                             'and transaction successfully created',
-                                    transactionCreated: tsctnCreated,
-                                    accountUpdated: require('../bcaccounts/updateTransactions')(data)
+                                    transactionCreated: tsctnCreated
                                 });
                               
 

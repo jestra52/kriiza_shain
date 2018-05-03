@@ -89,7 +89,7 @@ function updateTransaction (transInfo, cb)  {
                                 success: true,
                                 message: 'User successfully updated ' +
                                         'and account successfully updated',
-                                userUpdated: userData
+                                //userUpdated: userData
                             });
         
                         });
