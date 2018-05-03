@@ -74,5 +74,6 @@ apiRouter.get('/bcaccounts/currentCounter', bcaccountsController.getCurrentCount
 apiRouter.get('/bcaccounts', verifyToken, bcaccountsController.getAccounts);
 
 apiRouter.put('/bctransactions/create/:id', verifyToken, bctsctnController.create);
+apiRouter.get('/bctransactions/', bctsctnController.getAll);
 
 module.exports = apiRouter;

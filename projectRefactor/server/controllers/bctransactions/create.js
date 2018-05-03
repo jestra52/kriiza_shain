@@ -39,7 +39,10 @@ let create = (req, res) => {
             
             let transactionToCreate = new BCTransaction();
 
-            transactionToCreate.transactionInfo = req.body.transactionInfo;
+            transactionToCreate.transactionInfo.to      = req.body.transactionInfo.to;
+            transactionToCreate.transactionInfo.content = req.body.transactionInfo.content;
+            transactionToCreate.parentTransactionHash   = req.body.parentTransactionHash;
+
             transactionToCreate.transactionHash = req.body.transactionHash;
             transactionToCreate.createdAt       = date.toISOString();
             transactionToCreate.updatedAt       = date.toISOString();
@@ -59,6 +62,10 @@ let create = (req, res) => {
                     success: false,
                     message: 'The user does not exist'
                 });
+
+                transactionToCreate.transactionInfo
+                                   .transactionOwner = userData.firstName + ' ' 
+                                                     + userData.lastName;
 
                 transactionToCreate.save((errST, tsctnCreated) => {
 
@@ -83,7 +90,7 @@ let create = (req, res) => {
     
                         return res.status(200).json({
                             success: true,
-                            message: 'Users successfully update' +
+                            message: 'Users successfully update ' +
                                      'and transaction successfully created',
                             transactionCreated: tsctnCreated
                         });
