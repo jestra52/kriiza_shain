@@ -6,6 +6,7 @@ const jwt       = require('jsonwebtoken');
 const userController       = require('../controllers/user/exports');
 const authController       = require('../controllers/auth/exports');
 const bcaccountsController = require('../controllers/bcaccounts/exports');
+const bctsctnController    = require('../controllers/bctransactions/exports');
 const config               = require('../config/config');
 
 apiRouter.get('/', (req, res) => {
@@ -71,5 +72,7 @@ apiRouter.post('/auth/login', authController.login);
 
 apiRouter.get('/bcaccounts/currentCounter', bcaccountsController.getCurrentCounter);
 apiRouter.get('/bcaccounts', verifyToken, bcaccountsController.getAccounts);
+
+apiRouter.put('/bctransactions/create/:id', verifyToken, bctsctnController.create);
 
 module.exports = apiRouter;
