@@ -17,6 +17,7 @@ export const store = new Vuex.Store({
             isLoggedIn: false,
             token: ''
         },
+        transactionInfo: {},
         errorMessage: {},
         bcAccounts: {}
     },
@@ -32,6 +33,10 @@ export const store = new Vuex.Store({
 
         getBcAccounts: (state) => {
             return state.bcAccounts;
+        },
+
+        getTransactionInfo: (state) => {
+            return state.transactionInfo;
         }
     },
 
@@ -52,6 +57,10 @@ export const store = new Vuex.Store({
 
         addBcAccounts: (state, bcAccounts) => {
             state.bcAccounts = bcAccounts;
+        },
+
+        addTransactionInfo: (state, tscinfo) => {
+            state.transactionInfo = tscinfo;
         },
 
         addError: (state, errorMessage) => {
@@ -94,6 +103,10 @@ export const store = new Vuex.Store({
                 context.commit('removeWebToken');
                 context.commit('addUserData', {});
             }
+        },
+
+        currentTransactionInfo: (context) => {
+            context.commit('addTransactionInfo');
         },
 
         getUserInfo: (context, userInfo) => {

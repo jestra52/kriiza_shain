@@ -4,10 +4,17 @@
             <h3 id="titlePP">SHAIN</h3>
             <table id="options" align="right" name="options">
                 <tr>
+                    <th> Hola! {{getUser.data.firstName}} {{getUser.data.lastName}}</th>
                     <th>
                         <router-link to="/transaction">
                             <a class="btn btn-light btnProfile">
                                 <span class="btn btn-light">Transacciones</span>
+                            </a>
+                        </router-link>
+
+                        <router-link to="/">
+                            <a class="btn btn-light btnProfile">
+                                <span class="btn btn-light" @click="logout()">Cerrar sesión</span>
                             </a>
                         </router-link>
                     </th>
@@ -102,76 +109,100 @@
             </div>
 
         </div>
+        <div  id="botBar">
+            <h5 id="creado"> Creado por la compañia Kriiza </h5>
+            <table id="infoBot">
+                <tr>
+                    <th id="derechos">
+                        <h5>Todos los derechos reservados   2018</h5>
+                    </th>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 <script>
-
-const Web3 = require('web3');
+const Web3 = require("web3");
 const web3 = new Web3();
-const contract = require('../../build/contracts/CafeVerde.json');
-web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:7545'));
+const contract = require("../../build/contracts/CafeVerde.json");
+web3.setProvider(new web3.providers.HttpProvider("http://127.0.0.1:7545"));
 var provider = new Web3.providers.HttpProvider("http://localhost:7545");
 var truffleContract = require("truffle-contract");
 var Mycontract = truffleContract(contract);
 Mycontract.setProvider(provider);
-function getBalancesVerde(){
-    console.log('Getting balances...');
 
-    var cafeVerdeInstance;
+//getBalancesVerde(this);
 
-    web3.eth.getAccounts(function (error, accounts) {
+import { mapGetters, mapActions } from "vuex";
+import { store } from "../store/store";
+
+export default {
+  data() {
+    return {
+      hash: "",
+     
+    };
+  },
+
+  /*data: {
+        hash: '',
+        balance: 'sdsd'
+    },*/
+
+  store,
+
+  computed: {
+    getBalancesVerde: () => {
+      console.log("Getting balances...");
+
+      var cafeVerdeInstance;
+      var self = this;
+
+      web3.eth.getAccounts(function(error, accounts) {
         if (error) {
-            console.log(error);
+          console.log(error);
         }
 
         var account = accounts[0];
 
-        Mycontract.deployed().then(function (instance) {
+        Mycontract.deployed()
+          .then(function(instance) {
             cafeVerdeInstance = instance;
             console.log(cafeVerdeInstance);
             return cafeVerdeInstance.balanceOf(account);
-        }).then(function (result) {
-            balance = result.c[0];
+          })
+          .then(function(result) {
+            var balance = result.c[0];
+
             console.log(balance);
-            //$('#cafeVerde').text(balance);
-        }).catch(function (err) {
+            //self.$data.balance = balance;
+            $("#cafeVerde").text(balance);
+          })
+          .catch(function(err) {
             console.log(err.message);
-        });
-    });
-}
-getBalancesVerde();
-
-import { mapGetters, mapActions} from 'vuex';
-import { store } from '../store/store';
-
-export default {
-    data () {
-        return {
-            hash: ''
-        }
+          });
+      });
     },
 
-    computed: {
-        ...mapGetters([
-            'getUser',
-            'getErrorMessage',
-            'getBcAccounts'
-        ])
+    ...mapGetters([
+      "getUser",
+      "getErrorMessage",
+      "getBcAccounts",
+      "getTransactionInfo"
+    ])
+  },
+
+  methods: {
+    submit() {
+      this.$store.dispatch("getAllAccounts");
     },
 
-    store,
-
-    methods: {
-        submit () {
-            this.$store.dispatch('getAllAccounts');
-        },
-
-        ...mapActions([
-            'getUserInfo',
-            'getAllAccounts',
-            'logout'
-        ])
-    }
-}
-
+    ...mapActions([
+      "getUserInfo",
+      "getAllAccounts",
+      "logout",
+      "currentTransactionInfo"
+    ])
+  }
+};
 </script>
