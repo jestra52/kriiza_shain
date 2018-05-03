@@ -90,6 +90,10 @@
                 </div>
             </div>
 
+            <div>
+                {{ showInfo() }}
+            </div>
+
             <div id="bcAccounts">
                 <h2>Cuentas</h2>
                 <ul>
@@ -147,7 +151,7 @@ import { store } from '../store/store';
 export default {
     data () {
         return {
-            hash: ''
+            hash: 'sdsdf'
         }
     },
 
@@ -162,6 +166,10 @@ export default {
     store,
 
     methods: {
+        showInfo () {
+            return this.hash;
+        },
+
         submit () {
             this.$store.dispatch('getAllAccounts');
         },
