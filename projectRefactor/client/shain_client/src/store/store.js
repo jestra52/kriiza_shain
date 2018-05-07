@@ -12,7 +12,7 @@ web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:7545'));
 export const store = new Vuex.Store({
     strict: true,
 
-    plugins: [ createPersistedState() ],
+    //plugins: [ createPersistedState() ],
 
     state: {
         user: {
@@ -124,10 +124,10 @@ export const store = new Vuex.Store({
                     data: err.response.data
                 });
 
-                context.commit('addError', {
+                /*context.commit('addError', {
                     status: err.response.status,
                     data: err.response.data
-                });
+                });*/
             });
         },
 
