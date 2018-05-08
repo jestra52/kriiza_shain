@@ -77,12 +77,17 @@
     </div>
 </template>
 <script>
+
+import config from '../config';
+
+const apiURL = 'http://' + config.apiHost + ':' + config.apiPort;
+
 const Web3 = require("web3");
 const web3 = new Web3();
 const contractVerde = require("../../build/contracts/CafeVerde.json");
 const contractTostado = require("../../build/contracts/CafeTostado.json");
-web3.setProvider(new web3.providers.HttpProvider("http://127.0.0.1:7545"));
-var provider = new Web3.providers.HttpProvider("http://localhost:7545");
+web3.setProvider(new web3.providers.HttpProvider(config.ethNetwork));
+var provider = new Web3.providers.HttpProvider(config.ethNetwork);
 var truffleContract = require("truffle-contract");
 var MycontractVerde = truffleContract(contractVerde);
 var MycontractTostado = truffleContract(contractTostado);
