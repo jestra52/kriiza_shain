@@ -22,6 +22,10 @@ export default {
 
     getAllTransactions: (state) => {
         return state.transactions;
+    },
+
+    getUserDataByAccount: (state) => {
+        return state.userDataByAccount;
     }
 
 };
