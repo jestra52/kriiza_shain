@@ -239,28 +239,36 @@ export default {
     },
 
     getUserByAccount: (context, bcaccount) => {
-        let id   = context.state.user.data._id;
-        let opts = {
-            headers: {
-                'Authorization': 'Bearer ' + context.state.user.token,
-                'bcaccount': bcaccount
-            }
-        };
+        if (!context.state.user.isLoggedIn) {
+            console.log('USER NOT AUTHENTICATED');
+        }
+        else {
 
-        axios.get(apiURL + '/api/users/getbyaccount', opts).then(res => {
-            console.log("RESPONSE:", {
-                status: res.status,
-                data: res.data.userData
-            });
+            let id   = context.state.user.data._id;
+            let opts = {
+                headers: {
+                    'Authorization': 'Bearer ' + context.state.user.token,
+                    'bcaccount': bcaccount
+                }
+            };
 
-            context.commit('addUserDataFromAccount', res.data.userData);
-        })
+            axios.get(apiURL + '/api/users/getbyaccount', opts).then(res => {
+                console.log("RESPONSE:", {
+                    status: res.status,
+                    data: res.data.userData
+                });
+
+                context.commit('addUserDataFromAccount', res.data.userData);
+            })
             .catch(err => {
                 console.log("RESPONSE:", {
                     status: err.response.status,
                     data: err.response.data
                 });
             });
+
+        }
+
     }
 
 }
