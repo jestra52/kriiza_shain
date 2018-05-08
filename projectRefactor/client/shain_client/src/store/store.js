@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
 
     strict: true,
 
-    plugins: [ createPersistedState() ],
+    //plugins: [ createPersistedState() ],
 
     state: {
         user: {

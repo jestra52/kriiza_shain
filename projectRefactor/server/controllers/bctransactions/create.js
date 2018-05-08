@@ -39,6 +39,8 @@ let create = (req, res) => {
             let offset = date.getTimezoneOffset();
             date.setMinutes(date.getMinutes() - offset);
 
+            console.log('ACCOUNT HASH TO', req.body.transactionInfo.to);
+            
             BCAccount.findOne({ 
                 accountHash: req.body.transactionInfo.to 
             }, 
@@ -109,7 +111,7 @@ let create = (req, res) => {
                                     throw err;
                                 }
 
-                                console.log(userUpdated);                                
+                                //console.log(userUpdated);                                
 
                                 let data = {
                                     accountHash: transactionToCreate.transactionInfo.to,

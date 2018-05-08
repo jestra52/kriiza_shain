@@ -48,6 +48,7 @@ export default {
             context.commit("addBalanceTostado", 0);
             context.commit("addTransactionInfo", {});
             context.commit('addTotalTransactions', {});
+            context.commit('addUserDataFromAccount', {});
             context.commit("addError", {});
         }
     },
@@ -193,6 +194,8 @@ export default {
                         status: res.status,
                         data: res.data
                     });
+
+                    context.commit("addTransactionInfo", res.data.transactionCreated);
                 })
                 .catch(err => {
                     console.log("RESPONSE:", {

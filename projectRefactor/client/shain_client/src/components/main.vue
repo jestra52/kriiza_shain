@@ -1,14 +1,14 @@
 <template>
     <div id="main">
         <div class="container">
-            <div>
+            <!--<div>
                 <input type="text" class="form-control" id="hash" v-model="hash" placeholder="Ingrese el hash del producto">
                 <button class="btn btn-primary btn-form" id="start" @click="submit()">Comenzar</button>
-            </div>
+            </div>-->
 
-            <div v-if="getUser.isLoggedIn == true">
+            <!--<div v-if="getUser.isLoggedIn == true">
                 <button class="btn btn-primary btn-form" id="start" @click="makeTransaction()">Hacer transaccion</button>
-            </div>
+            </div>-->
 
             <div v-if="getUser.isLoggedIn == true">
                 <h2>Historial de transacciones recibidas</h2>
