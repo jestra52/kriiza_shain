@@ -131,12 +131,13 @@ export default {
     submitVerde() {
       var amount = this.$data.cantidadCafeVerde;
       var toAddress = this.$data.selectedVerde;
-
+      
       console.log("Transfer " + amount + " TT to " + toAddress);
 
-      var cafeVerdeInstance;
+      var cafeVerdeInstance;  
       var self = this;
-
+      self.$store.dispatch("getUserByAccount", toAddress);
+      
       web3.eth.getAccounts(function(error, accounts) {
         if (error) {
           console.log(error);
@@ -152,6 +153,21 @@ export default {
           })
           .then(function(result) {
             alert("Transfer Successful!");
+            var blockHash = result.receipt.blockHash;
+            var firstName = self.$store.getters.getUserDataByAccount.firstName;
+            var lastName = self.$store.getters.getUserDataByAccount.lastName;
+            console.log();
+            let data = {
+              transactionInfo: {
+                to: toAddress,
+                toName: firstName + " " + lastName,
+                content: {
+                  balance: amount
+                }
+              },
+              transactionHash: blockHash
+            }
+            self.$store.dispatch("createTransaction", data);
             self.getBalancesVerde();
           })
           .catch(function(err) {
