@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var devserverconfig = require('./devserver.config')
 
 module.exports = {
   entry: './src/main.js',
@@ -48,7 +49,9 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    host: devserverconfig.host,
+    port: devserverconfig.port
   },
   performance: {
     hints: false
