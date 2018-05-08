@@ -31,6 +31,10 @@ import { mapGetters, mapActions} from 'vuex';
 import { store } from '../store/store';
 import axios from 'axios';
 
+import config from '../config';
+
+const apiURL = 'http://' + config.apiHost + ':' + config.apiPort;
+
 export default {
     data () {
         return {
@@ -54,7 +58,7 @@ export default {
 
     methods: {
         submit () {
-            axios.get('http://127.0.0.1:3000/api/bcaccounts/currentCounter').then(res => {
+            axios.get(apiURL + '/api/bcaccounts/currentCounter').then(res => {
                 //console.log('CURRENT ETHEREUM ACCOUNT:', web3.eth.accounts[res.data.currentCounter]);
                 // Passing the userdata in an object as payload to the signup action
                 this.$store.dispatch('signUp', {
