@@ -108,11 +108,8 @@ let create = (req, res) => {
                         
                                     throw err;
                                 }
-                        
-                                if (!userUpdated) return res.status(404).send({
-                                    success: false,
-                                    message: 'The user does not exist'
-                                });
+
+                                console.log(userUpdated);                                
 
                                 let data = {
                                     accountHash: transactionToCreate.transactionInfo.to,
