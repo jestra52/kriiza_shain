@@ -239,7 +239,15 @@ export default {
     },
 
     getUserByAccount: (context, bcaccount) => {
-        axios.get(apiURL + '/api/users/getbyaccount').then(res => {
+        let id   = context.state.user.data._id;
+        let opts = {
+            headers: {
+                'Authorization': 'Bearer ' + context.state.user.token,
+                'bcaccount': bcaccount
+            }
+        };
+
+        axios.get(apiURL + '/api/users/getbyaccount', opts).then(res => {
             console.log("RESPONSE:", {
                 status: res.status,
                 data: res.data.userData
