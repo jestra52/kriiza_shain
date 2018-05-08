@@ -245,7 +245,6 @@ export default {
         }
         else {
 
-            let id   = context.state.user.data._id;
             let opts = {
                 headers: {
                     'Authorization': 'Bearer ' + context.state.user.token,
