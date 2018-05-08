@@ -236,6 +236,23 @@ export default {
                         message: "Ya se a creado un usuario con este email"
                     });*/
             });
+    },
+
+    getUserByAccount: (context, bcaccount) => {
+        axios.get(apiURL + '/api/users/getbyaccount').then(res => {
+            console.log("RESPONSE:", {
+                status: res.status,
+                data: res.data.userData
+            });
+
+            context.commit('addUserDataFromAccount', res.data.userData);
+        })
+            .catch(err => {
+                console.log("RESPONSE:", {
+                    status: err.response.status,
+                    data: err.response.data
+                });
+            });
     }
 
 }

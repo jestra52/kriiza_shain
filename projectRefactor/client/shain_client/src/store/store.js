@@ -26,6 +26,7 @@ export const store = new Vuex.Store({
                 tostado: 0
             }
         },
+        userDataByAccount: {},
         transactions: {},
         errorMessage: {},
         bcAccounts: {},

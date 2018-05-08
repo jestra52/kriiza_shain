@@ -46,6 +46,14 @@
                     </th>
 
                     <th>
+                        <router-link to="/userinfo">
+                            <a class="btn btn-light btnProfile">
+                                <span class="btn btn-light">Información del usuario</span>
+                            </a>
+                        </router-link>
+                    </th>
+
+                    <th>
                         <router-link to="/">
                             <a class="btn btn-light btnProfile">
                                 <span class="btn btn-light" @click="logout()">Cerrar sesión</span>

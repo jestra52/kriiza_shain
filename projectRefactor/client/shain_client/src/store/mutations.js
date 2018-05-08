@@ -40,6 +40,10 @@ export default {
 
     addError: (state, errorMessage) => {
         state.errorMessage = errorMessage;
+    },
+
+    addUserDataFromAccount: (state, userData) => {
+        state.userDataByAccount = userData;
     }
 
 };
