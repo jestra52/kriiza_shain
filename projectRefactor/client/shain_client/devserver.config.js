@@ -1,7 +1,9 @@
+import config from './src/config';
+
 module.exports = {
 
-    host: '127.0.0.1' || process.env.CLIENT_HOST,
-    port: 8080 || process.env.CLIENT_PORT,
+    host: config.host || process.env.CLIENT_HOST,
+    port: config.port || process.env.CLIENT_PORT,
     proxyTable: {
         '/': {
             target: 'http://localhost:8080',

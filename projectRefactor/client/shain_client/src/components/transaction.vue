@@ -80,7 +80,7 @@
 
 import config from '../config';
 
-const apiURL = 'http://' + config.apiHost + ':' + config.apiPort;
+const apiURL = 'http://' + config.apiHost;
 
 const Web3 = require("web3");
 const web3 = new Web3();

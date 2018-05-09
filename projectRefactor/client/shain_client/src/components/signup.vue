@@ -33,7 +33,7 @@ import axios from 'axios';
 
 import config from '../config';
 
-const apiURL = 'http://' + config.apiHost + ':' + config.apiPort;
+const apiURL = 'http://' + config.apiHost;
 
 export default {
     data () {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from "../config";
 
 const web3 = new Web3();
-const apiURL = 'http://' + config.apiHost + ':' + config.apiPort;
+const apiURL = 'http://' + config.apiHost;
 
 web3.setProvider(new web3.providers.HttpProvider(config.ethNetwork));
 
