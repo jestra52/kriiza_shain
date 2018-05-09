@@ -6,14 +6,15 @@ A Blockchain application made for products history.
 - Truffle.js (^4.1.5): https://github.com/trufflesuite/truffle
 - Ganache Client (^6.1.0): https://github.com/trufflesuite/ganache-cli
 
-# Installing dependencies
+# Installation (on Linux)
+## Installing dependencies
 ```bash
 $ sudo npm install -g truffle
 $ sudo npm install -g ganache-cli
 $ sudo npm install -g solc
 ```
 
-# Installing and running server (RESTful API)
+## Installing and running server (RESTful API)
 ```bash
 $ git clone https://github.com/jestra52/kriiza_shain.git
 $ cd kriiza_shain/projectRefactor/server/
@@ -22,7 +23,7 @@ $ node app.js
 (If you have Gulp installed then: $ gulp)
 ```
 
-# To run Ganache test network
+## To run Ganache test network
 ```bash
 $ cd ../client/shain_client/ (from server/ path)
 $ npm install
@@ -30,7 +31,7 @@ $ truffle migrate (running test network or ethereum network)
 $ npm run dev
 ```
 
-# Installing and running client
+## Installing and running client
 ```bash
 $ cd ../client/shain_client/ (from server/ path)
 $ npm install
