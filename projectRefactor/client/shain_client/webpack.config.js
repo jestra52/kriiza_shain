@@ -2,6 +2,8 @@ var path = require('path')
 var webpack = require('webpack')
 var devserverconfig = require('./devserver.config')
 
+console.log('RUNNING WITH', devserverconfig.host, devserverconfig.port)
+
 module.exports = {
   entry: './src/main.js',
   output: {

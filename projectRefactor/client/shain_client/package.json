@@ -6,7 +6,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
+    "dev": "cross-env NODE_ENV=development CLIENT_HOST=127.0.0.1 CLIENT_PORT=8080  webpack-dev-server --hot",
+    "prod": "cross-env NODE_ENV=development CLIENT_HOST=10.131.137.243 CLIENT_PORT=8080 webpack-dev-server --hot --public pi2shain.dis.eafit.edu.co",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
