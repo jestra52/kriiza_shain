@@ -1,6 +1,6 @@
 module.exports = {
 
-    host: '10.131.137.243' || process.env.CLIENT_HOST,
+    host: '127.0.0.1' || process.env.CLIENT_HOST,
     port: 8080 || process.env.CLIENT_PORT,
     proxyTable: {
         '/': {
