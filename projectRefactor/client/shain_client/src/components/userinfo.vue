@@ -1,5 +1,6 @@
 <template>
     <div class="container" v-if="getUser != null && getUser.isLoggedIn != false">
+
         <div class="jumbotron">
             <p id="fullname">Nombre: {{ getUser.data.firstName }} {{ getUser.data.lastName }}</p>
             <p id="emailinfo">E-mail: {{ getUser.data.email }}</p>
@@ -14,6 +15,7 @@
             </div>
 
         </div>
+
     </div>
 </template>
 

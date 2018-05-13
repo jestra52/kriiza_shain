@@ -1,5 +1,6 @@
 <template>
     <div id="transaction">
+
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-push-2">
@@ -38,6 +39,7 @@
                     </table>
                 </div>
             </div>
+
             <div id="cafeTostadoRow" class="row" style="float:left; width:49%;">
                 <div class="col-sm-6 col-sm-push-3 col-md-4 col-md-push-4" style="width:49%;">
                     <table cellspacing="90">
@@ -74,6 +76,7 @@
             </div>
 
         </div>
+
     </div>
 </template>
 <script>

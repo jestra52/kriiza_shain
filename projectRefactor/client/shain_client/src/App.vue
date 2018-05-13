@@ -46,7 +46,7 @@
 
                         <li class="nav-item">
                             <router-link to="/transaction">
-                                <a class="nav-link">Transacciones</a>
+                                <a class="nav-link">Panel de transacción</a>
                             </router-link>
                         </li>
 
@@ -72,7 +72,7 @@
                 <div class="navbar-collapse collapse w-200 order-3 dual-collapse2" v-else>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <span class="nav-link">Hola {{ getUser.data.firstName}}!</span>
+                            <span class="nav-link">¡Hola, {{ getUser.data.firstName}}!</span>
                         </li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
 
 
         <!--Footer-->
-        <footer class="footer page-footer font-small mdb-color lighten-3 pt-4 mt-4 sticky-bottom">
+        <footer class="page-footer font-small mdb-color lighten-3 pt-4 mt-4 sticky-bottom">
 
             <!--Footer Links-->
             <div class="container-fluid text-center text-md-left">

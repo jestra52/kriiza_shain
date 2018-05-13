@@ -1,16 +1,15 @@
 <template>
-    <div id="login" class="form-login">
+    <div class="container">
 
         <h3>Ingrese con su cuenta</h3>
         <div class="alert alert-danger" v-if="getErrorMessage != null && getErrorMessage.data">
             <p>{{ getErrorMessage.data }}</p>
         </div>
 
-        <div id="box-login">
+        <div id="login" class="md-form form">
             <input type="text" class="form-control" id="email" v-model="email" placeholder="Email">
             <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña">
-        </div>
-        <div id="btnLogin">
+
             <button class="btn btn-primary" @click="submit()">Ingresar</button>
         </div>
 

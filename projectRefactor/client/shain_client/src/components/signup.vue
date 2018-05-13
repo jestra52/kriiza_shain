@@ -1,25 +1,53 @@
 <template>
-    <div id="signup" class="form-signup">
+    <div class="container">
 
-        <h3>Nuevo usuario</h3>
+        <div id="signup">
+            <h3>Ingrese los datos para registrarse</h3>
 
-        <div class="alert alert-danger" v-if="getErrorMessage != null && getErrorMessage.message">
-            <p>{{ getErrorMessage.message }}</p>
-        </div>
+            <!-- Grid row -->
+            <div class="form-row">
+                <!-- Grid column -->
+                <div class="col-md-6">
+                    <div class="md-form form-group">
+                        <input type="email" class="form-control" id="email" v-model="email" placeholder="Email">
+                    </div>
+                </div>
 
-        <div class="alert alert-success" v-if="getUser.isLoggedIn != false">
-            <p>El usuario se ha registrado con la cuenta {{ getUser.data.bcAccount.accountHash }} de la red Blockchain</p>
-        </div>
+                <!-- Grid column -->
+                <div class="col-md-6">
+                    <div class="md-form form-group">
+                        <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña">
+                    </div>
+                </div>
 
-        <div id="box-signup">
-            <input type="email" class="form-control" id="email" v-model="email" placeholder="Email">
-            <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña">
-            <input type="text" class="form-control" id="firstName" v-model="firstName" placeholder="Nombre">
-            <input type="text" class="form-control" id="lastName" v-model="lastName" placeholder="Apellido">
-        </div>
+                <!-- Grid column -->
+                <div class="col-md-12">
+                    <div class="md-form form-group">
+                        <input type="text" class="form-control" id="firstName" v-model="firstName" placeholder="Nombre">
+                    </div>
+                </div>
 
-        <div id="btnLogin">
+                <!-- Grid column -->
+                <div class="col-md-12">
+                    <div class="md-form form-group">
+                        <input type="text" class="form-control" id="lastName" v-model="lastName" placeholder="Apellido">
+                    </div>
+                </div>
+            </div>
+            <!-- Grid row -->
+
             <button class="btn btn-primary btn-form" @click="submit()">Crear cuenta</button>
+
+            <div class="alert alert-danger" v-if="getErrorMessage != null && getErrorMessage.message">
+                <p>{{ getErrorMessage.message }}</p>
+            </div>
+
+            <!--Success message-->
+            <a class="btn btn-success" onclick="toastr.success('Hi! I am success message.');">Success message</a>
+
+            <div class="alert alert-success" v-if="getUser.isLoggedIn != false">
+                <p>El usuario se ha registrado exitosamente con la cuenta {{ getUser.data.bcAccount.accountHash }} de la red Blockchain</p>
+            </div>
         </div>
 
     </div>
