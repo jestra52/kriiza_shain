@@ -14,18 +14,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.(css|sass|scss)$/,
         use: [
-          'vue-style-loader',
-          'css-loader'
-        ],
-      },      {
+            'vue-style-loader',
+            'css-loader',
+            'sass-loader'
+        ]
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-          }
-          // other vue-loader options go here
+            loaders: {
+                'scss': 'vue-style-loader!css-loader!sass-loader',
+                'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+            }
         }
       },
       {

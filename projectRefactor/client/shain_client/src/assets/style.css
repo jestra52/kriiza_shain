@@ -1,4 +1,4 @@
-.form-login, .form-signup{
+/*.form-login, .form-signup{
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -13,7 +13,6 @@
 body {
       margin: 0;
       padding: 0;
-      font-family: Helvetica, Arial, sans-serif;
       color: #666;
       background: #f2f2f2;
       font-size: 1em;
@@ -141,3 +140,33 @@ body {
     width: 10%;
     margin-top: 1%;
   }
+*/
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.content {
+    flex: 1 0 auto;
+    /* Prevent Chrome, Opera, and Safari from letting these items shrink to smaller than their content's default minimum size. */
+    padding: 20px;
+}
+
+.footer {
+    flex-shrink: 0;
+    /* Prevent Chrome, Opera, and Safari from letting these items shrink to smaller than their content's default minimum size. */
+    padding: 20px;
+}
+
+/*footer.page-footer, footer.footer-copyright {
+    bottom: 0;
+    width: 100%;
+    z-index:9999999;
+}*/

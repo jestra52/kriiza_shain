@@ -6,6 +6,7 @@ import signup from './components/signup.vue'
 import main from './components/main.vue'
 import transaction from './components/transaction.vue'
 import userinfo from './components/userinfo.vue'
+//import bootstrap from 'bootstrap/scss/bootstrap.scss'
 
 Vue.use(Router)
 
