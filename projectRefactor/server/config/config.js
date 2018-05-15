@@ -9,7 +9,7 @@ module.exports = {
     db: 'mongodb://127.0.0.1/kriiza_shain' || process.env.DB_HOST,
     rootPath: normalize(process.cwd()),
     secret: 'CUM971007EVA01JOZ' || process.env.TOKEN_SECRET,
-    tokenExpiresIn: 900,
+    tokenExpiresIn: 1800,
     app: {
         name: 'kriiza_shain'
     }
