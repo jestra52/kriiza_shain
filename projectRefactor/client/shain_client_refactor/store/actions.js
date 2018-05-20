@@ -5,6 +5,9 @@ import config from "../config";
 const web3 = new Web3();
 const apiURL = 'http://' + config.apiHost;
 
+console.log('CONNECTED TO:', apiURL);
+console.log('CONNECTED TO:', config.ethNetwork);
+
 web3.setProvider(new web3.providers.HttpProvider(config.ethNetwork));
 
 export default {

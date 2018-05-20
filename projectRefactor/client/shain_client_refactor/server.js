@@ -141,7 +141,8 @@ app.get('*', isProd ? render : (req, res) => {
 })
 
 const port = process.env.PORT || 8080
-let appServer = app.listen(port, '0.0.0.0', () => {
+
+app.listen(port, '0.0.0.0', () => {
   console.log(`server started at localhost:${port}`)
 })
 

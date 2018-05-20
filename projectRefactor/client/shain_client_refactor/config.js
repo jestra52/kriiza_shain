@@ -1,10 +1,9 @@
 'use strict';
 
-
 export default {
 
-    apiHost: 'pi2shain.dis.eafit.edu.co' || process.env.API_HOST,
-    ethNetwork: 'http://pi2shain.dis.eafit.edu.co/bcnet' || process.env.ETH_NETWORK,
+    apiHost: process.env.API_HOST || '127.0.0.1:3000',
+    ethNetwork: process.env.ETH_NETWORK || 'http://127.0.0.1:7545',
     app: {
         name: 'kriiza_shain_client'
     }
