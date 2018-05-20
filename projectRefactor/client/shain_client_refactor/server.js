@@ -4,6 +4,7 @@ const LRU = require('lru-cache')
 const express = require('express')
 const favicon = require('serve-favicon')
 const compression = require('compression')
+const logger = require('morgan')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
 const redirects = require('./router/301.json')
@@ -64,6 +65,7 @@ app.use(favicon('./static/favicon.ico'))
 app.use('/static', serve('./static', true))
 app.use('/public', serve('./public', true))
 app.use('/static/robots.txt', serve('./robots.txt'))
+app.use(logger('dev'))
 
 app.get('/sitemap.xml', (req, res) => {
   res.setHeader("Content-Type", "text/xml")
@@ -139,6 +141,16 @@ app.get('*', isProd ? render : (req, res) => {
 })
 
 const port = process.env.PORT || 8080
-app.listen(port, '0.0.0.0', () => {
+let appServer = app.listen(port, '0.0.0.0', () => {
   console.log(`server started at localhost:${port}`)
 })
+
+// Cleaning project instances
+/*process.on('SIGINT', () => {
+    setTimeout(() => {
+        appServer.close(() => {
+            //console.log('App server is stopping...')
+            process.exit(0)
+        })
+    }, 200)
+})*/

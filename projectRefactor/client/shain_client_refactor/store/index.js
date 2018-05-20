@@ -1,7 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-Vue.use(Vuex)
+import getters from 'store/getters';
+import mutations from 'store/mutations';
+import actions from 'store/actions';
+
+Vue.use(Vuex);
 
 export function createStore () {
     return new Vuex.Store({
@@ -24,10 +28,10 @@ export function createStore () {
             bcAccountData: {}
         },
 
-        actions: {},
+        actions,
 
-        mutations: {},
+        mutations,
 
-        getters: {}
+        getters
     })
-}
+};

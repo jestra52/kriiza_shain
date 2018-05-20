@@ -11,6 +11,12 @@ import {
   VToolbar,
   VCard,
   VParallax,
+  VJumbotron,
+  VDivider,
+  VDataIterator,
+  VForm,
+  VTextField,
+  VSnackbar,
   transitions
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
@@ -33,6 +39,12 @@ Vue.use(Vuetify, {
     VToolbar,
     VCard,
     VParallax,
+    VJumbotron,
+    VDivider,
+    VDataIterator,
+    VForm,
+    VTextField,
+    VSnackbar,
     transitions
   },
   theme: {
