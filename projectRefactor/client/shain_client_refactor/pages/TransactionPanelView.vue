@@ -110,6 +110,10 @@ console.log('ETH NETWORK', config.ethNetwork);
 
 const Web3 = require("web3");
 const web3 = new Web3();
+
+//import contractVerde from '../output/CafeVerde.json';
+//import contractTostado from '../output/CafeTostado.json';
+
 const contractVerde = require("../output/CafeVerde.json");
 const contractTostado = require("../output/CafeTostado.json");
 web3.setProvider(new web3.providers.HttpProvider(config.ethNetwork));
@@ -120,8 +124,9 @@ var MycontractTostado = truffleContract(contractTostado);
 MycontractVerde.setProvider(provider);
 MycontractTostado.setProvider(provider);
 
-console.log('WEB3', web3.eth);
+//console.log(contractVerde);
 
+console.log('WEB3', web3.eth);
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -248,6 +253,7 @@ export default {
           console.log(error);
         }
         var account = self.$store.state.user.data.bcAccount.accountHash;
+        console.log('CUENTA',self.$store.state.user.data.bcAccount.accountHash);
 
         MycontractVerde.deployed()
           .then(function(instance) {
