@@ -11,7 +11,7 @@
                 <v-btn flat active-class to="/signup">Crear cuenta</v-btn>
             </v-toolbar-items>
             <v-toolbar-items v-else>
-                <v-btn flat active-class to="/findhouses">Panel de transacción</v-btn>
+                <v-btn flat active-class to="/transaction">Panel de transacción</v-btn>
                 <v-btn flat active-class to="/registerhouse">Información de usuario</v-btn>
                 <v-btn flat active-class @click="closeSession()">Cerrar sesión</v-btn>
             </v-toolbar-items>

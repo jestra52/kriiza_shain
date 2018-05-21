@@ -25,6 +25,8 @@ export function createRouter () {
         route('/', 'Index'),
         route('/inspire', 'Inspire'),
         route('/login', 'Login'),
+        route('/signup', 'Signup'),
+        route('/transaction', 'TransactionPanel'),
         // Global redirect for 404
         { path: '*', redirect: '/' }
       ]

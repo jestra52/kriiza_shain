@@ -1,4 +1,5 @@
 node_modules
+output
 .vs
 package-lock.json
 .idea

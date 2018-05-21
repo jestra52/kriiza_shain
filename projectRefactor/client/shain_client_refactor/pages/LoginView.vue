@@ -1,18 +1,33 @@
 <template>
 <v-content>
 
-    <v-jumbotron height="auto">
+    <v-jumbotron height="auto" dark>
         <v-container fill-height>
             <v-layout align-center>
-                <v-flex>
-                    <div v-if="getUser != null && getUser.isLoggedIn != false">User state
-                        {{ getUser }}
-                        <v-snackbar top vertical :timeout=timeout v-model="snackbarlogin">
-                            <p>Hola {{ getUser.data.firstName }}</p>
-                            <v-btn flat color="blue" @click.native="snackbarlogin = false">Cerrar</v-btn>
-                        </v-snackbar>
+                    <div v-if="getUser != null && getUser.isLoggedIn != false">
+                        <v-flex xs12>
+                            <h3 class="display-3">¡Hola {{ getUser.data.firstName }}!</h3>
+                            <span class="subheading">
+                                <p>Has ingresado exitosamente</p>
+                                <p>¡Tiempo sin verte!</p>
+                            </span>
+
+                            <v-snackbar top vertical :timeout=timeout v-model="snackbarlogin" auto-height>
+                                <p>¡Bienvenido {{ getUser.data.firstName }}!</p>
+                                <v-btn flat color="blue" @click.native="snackbarlogin = false">Cerrar</v-btn>
+                            </v-snackbar>
+                        </v-flex>
+
+                        <v-flex xs12>
+                            <img src="/static/awsface.png">
+                        </v-flex>
+
+                        <v-flex xs12>
+                            <v-btn color="success" to="/">
+                                Ir a la página principal
+                            </v-btn>
+                        </v-flex>
                     </div>
-                </v-flex>
             </v-layout>
         </v-container>
     </v-jumbotron>
@@ -65,25 +80,6 @@
     </v-container>
 
 </v-content>
-   <!-- <div class="container">
-
-        <h3>Ingrese con su cuenta</h3>
-        <div class="alert alert-danger" v-if="getErrorMessage != null && getErrorMessage.data">
-            <p>{{ getErrorMessage.data }}</p>
-        </div>
-
-        <div id="login" class="md-form form">
-            <input type="text" class="form-control" id="email" v-model="email" placeholder="Email">
-            <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña">
-
-            <button class="btn btn-primary" @click="submit()">Ingresar</button>
-        </div>
-
-        <div v-if="getUser != null && getUser.isLoggedIn != false">User state
-            {{ getUser }}
-        </div>
-
-    </div>-->
 </template>
 
 <script>
@@ -115,7 +111,7 @@ export default {
             const l = this.loader;
             this[l] = !this[l];
 
-            setTimeout(() => (this[l] = false), 1000);
+            setTimeout(() => (this[l] = false), 3000);
 
             this.loader = null;
         }

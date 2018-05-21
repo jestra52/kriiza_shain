@@ -16,7 +16,9 @@ import {
   VDataIterator,
   VForm,
   VTextField,
+  VSelect,
   VSnackbar,
+  VRadioGroup,
   transitions
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
@@ -44,7 +46,9 @@ Vue.use(Vuetify, {
     VDataIterator,
     VForm,
     VTextField,
+    VSelect,
     VSnackbar,
+    VRadioGroup,
     transitions
   },
   theme: {
