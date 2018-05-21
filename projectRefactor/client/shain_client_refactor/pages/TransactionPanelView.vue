@@ -217,11 +217,11 @@ export default {
             var blockHash = result.receipt.blockHash;
             var firstName = self.$store.getters.getUserDataByAccount.firstName;
             var lastName = self.$store.getters.getUserDataByAccount.lastName;
-            console.log();
             let data = {
                 to: toAddress,
                 toName: firstName + " " + lastName,
                 content: {
+                  type: 'CafeVerde',
                   balance: amount
                 },
                 transactionHash: blockHash
@@ -258,6 +258,19 @@ export default {
           })
           .then(function(result) {
             alert("Transfer Successful!");
+            var blockHash = result.receipt.blockHash;
+            var firstName = self.$store.getters.getUserDataByAccount.firstName;
+            var lastName = self.$store.getters.getUserDataByAccount.lastName;
+            let data = {
+                to: toAddress,
+                toName: firstName + " " + lastName,
+                content: {
+                  type: 'CafeTostado',
+                  balance: amount
+                },
+                transactionHash: blockHash
+            }
+            self.$store.dispatch("createTransaction", data);
             self.getBalancesTostado();
           })
           .catch(function(err) {
