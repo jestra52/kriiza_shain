@@ -4,7 +4,7 @@
   "author": "",
   "version": "0.0.1",
   "scripts": {
-    "dev": "cross-env API_HOST=pi2shain.dis.eafit.edu.co ETH_NETWORK=http://pi2shain.dis.eafit.edu.co/bcnet node server",
+    "dev": "cross-env node server",
     "start": "cross-env API_HOST=pi2shain.dis.eafit.edu.co ETH_NETWORK=http://pi2shain.dis.eafit.edu.co/bcnet NODE_ENV=production node server",
     "build": "rimraf dist && npm run build:client && npm run build:server",
     "build:client": "cross-env API_HOST=pi2shain.dis.eafit.edu.co ETH_NETWORK=http://pi2shain.dis.eafit.edu.co/bcnet NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",

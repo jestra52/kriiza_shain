@@ -28,27 +28,38 @@
                         <v-card-title primary-title>
                             <v-layout row wrap>
                                 <v-flex xs12 lg12>
-                                    <h3 class="headline mb-0">Cantidad</h3>
+                                    <h3 class="headline mb-0">Cantidad disponible</h3>
                                     <div>{{ getBalanceVerdeValue() }} KG</div>
                                 </v-flex>
 
                                 <v-flex xs12 lg12>
                                     <h3 class="headline mb-0">Enviar a</h3>
-                                    <v-radio-group v-model="radioGroup">
-                                        <v-radio
-                                            v-for="bcAccount in getBcAccounts"
-                                            :key="bcAccount.owner"
-                                            :label="`${bcAccount.owner}`"
-                                            :value="bcAccount.owner"
-                                        ></v-radio>
-                                    </v-radio-group>
+                                    <v-select
+                                    :items="getBcAccounts"
+                                    item-text="owner"
+                                    v-model="selectedVerde"
+                                    item-value="bcAccount"
+                                    label="Destinatario"
+                                    color="blue darken-2"
+                                    ></v-select>
+                                </v-flex>
+
+                                <v-flex xs12 lg12>
+                                    <h3 class="headline mb-0">Cantidad a enviar</h3>
+                                    <v-text-field
+                                    color="blue darken-2"
+                                    name="cantidadCafeVerde"
+                                    v-model="cantidadCafeVerde"
+                                    label=""
+                                    type="text">
+                                    </v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-card-title>
 
                         <v-card-actions>
                             <v-btn flat color="green">Más detalles</v-btn>
-                            <v-btn flat color="green">Enviar</v-btn>
+                            <v-btn flat color="green" @click="submitVerde()">Enviar</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
@@ -64,26 +75,37 @@
                             <v-layout row wrap>
                                 <v-flex xs12 lg12>
                                     <h3 class="headline mb-0">Cantidad</h3>
-                                    <div>KG</div>
+                                    <div>{{ getBalanceTostadoValue()}} KG</div>
                                 </v-flex>
 
                                 <v-flex xs12 lg12>
                                     <h3 class="headline mb-0">Enviar a</h3>
-                                    <v-radio-group v-model="radioGroup2">
-                                        <v-radio
-                                            v-for="bcAccount in getBcAccounts"
-                                            :key="bcAccount.owner"
-                                            :label="`${bcAccount.owner}`"
-                                            :value="bcAccount.owner"
-                                        ></v-radio>
-                                    </v-radio-group>
+                                    <v-select
+                                      :items="getBcAccounts"
+                                      item-text="owner"
+                                      item-value="bcAccount"
+                                      v-model="selectedTostado"
+                                      label="Destinatario"
+                                      color="blue darken-2"
+                                    ></v-select>
+                                </v-flex>
+
+                                <v-flex xs12 lg12>
+                                    <h3 class="headline mb-0">Cantidad a enviar</h3>
+                                    <v-text-field
+                                    color="blue darken-2"
+                                    name="cantidadCafeVerde"
+                                    v-model="cantidadCafeTostado"
+                                    label=""
+                                    type="text">
+                                    </v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-card-title>
 
                         <v-card-actions>
                             <v-btn flat color="green">Más detalles</v-btn>
-                            <v-btn flat color="green">Enviar</v-btn>
+                            <v-btn flat color="green" @click="submitTostado()">Enviar</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
@@ -137,11 +159,12 @@ export default {
       balanceVerde: "",
       balanceTostado: "",
       cantidadCafeVerde: "",
-      selectedVerde: "",
+      selectedVerde: null,
       cantidadCafeTostado: "",
       selectedTostado: "",
       radioGroup: 1,
-      radioGroup2: 1
+      radioGroup2: 1,
+      accounts: []
     };
   },
 
@@ -253,7 +276,6 @@ export default {
           console.log(error);
         }
         var account = self.$store.state.user.data.bcAccount.accountHash;
-        console.log('CUENTA',self.$store.state.user.data.bcAccount.accountHash);
 
         MycontractVerde.deployed()
           .then(function(instance) {
@@ -263,7 +285,7 @@ export default {
           })
           .then(function(result) {
             var balance = result.c[0];
-            self.balanceVerde = balance;
+            self.$data.balanceVerde = balance;
             self.$store.dispatch("currentBalanceVerde", balance);
           })
           .catch(function(err) {
@@ -292,7 +314,7 @@ export default {
             var balance = result.c[0];
             console.log(balance);
 
-            self.balanceTostado = balance;
+            self.$data.balanceTostado = balance;
             self.$store.dispatch("currentBalanceTostado", balance);
           })
           .catch(function(err) {
