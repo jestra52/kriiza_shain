@@ -57,7 +57,9 @@
                     </v-flex>
 
                     <v-flex xs12 lg12>
-                        <h3 class="display-1">Parece ser que no estás registrado, pero siempre hay una primera vez ;)</h3>
+                        <span class="subheading">
+                            <p>Parece ser que no estás registrado, pero siempre hay una primera vez ;)</p>
+                        </span>
                     </v-flex>
 
                     <v-flex xs12 lg12>
@@ -68,15 +70,15 @@
                     </v-flex>
 
                     <v-flex xs12 lg12>
-                        <h3 class="display-1">... O tal vez no has iniciado sesión</h3>
+                        <span class="subheading">
+                            <p>... O tal vez no has iniciado sesión</p>
+                        </span>
                     </v-flex>
 
                     <v-flex xs12 lg12>
                         <img src="/static/hmm.png" height="200px">
 
                     </v-flex>
-
-
 
                     <v-flex xs12 lg12>
                         <v-btn color="success"
