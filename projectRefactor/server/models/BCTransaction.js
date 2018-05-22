@@ -12,7 +12,7 @@ let BCTransaction = new mongoose.Schema({
         content: { type: Object, required: true }
     },
     transactionHash: { type: String, required: true },
-    parentTransactionHash: { type: String },
+    parentTransactionHash: { type: Object },
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true }
 

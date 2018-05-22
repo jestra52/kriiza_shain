@@ -26,6 +26,10 @@ export default {
 
     getUserDataByAccount: (state) => {
         return state.userDataByAccount;
+    },
+
+    getParentDataByAccount: (state) => {
+        return state.parentDataByAccount;
     }
 
 };

@@ -44,6 +44,10 @@ export default {
 
     addUserDataFromAccount: (state, userData) => {
         state.userDataByAccount = userData;
-    }
+    },
+
+    addParentDataFromAccount: (state, parentData) => {
+        state.parentDataByAccount = parentData;
+    },
 
 };

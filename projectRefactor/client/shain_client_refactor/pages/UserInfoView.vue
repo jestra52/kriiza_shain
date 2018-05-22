@@ -10,32 +10,59 @@
 
                     <v-flex xs12 lg12>
 
-                        <v-jumbotron :gradient="gradient" dark height="auto" class="elevation-5">
+                        <v-jumbotron :gradient="gradientTop" dark height="auto" class="elevation-5">
                             <v-toolbar dark color="light-blue darken-4">
                                 <v-toolbar-title>Información principal</v-toolbar-title>
                                 <v-spacer></v-spacer>
                             </v-toolbar>
 
-                            <span class="subheading">
-                                <p>Nombre: {{ getUser.data.firstName }} {{ getUser.data.lastName }}</p>
-                                <p>E-mail: {{ getUser.data.email }}</p>
-                                <p>Cuenta de la red Blockchain: {{ getUser.data.bcAccount.accountHash }}</p>
-                            </span>
+                            <v-container grid-list-lg>
+                                <v-layout row wrap>
+                                    <v-flex lg12>
+                                        <v-jumbotron height="auto">
+                                            <div>Nombre: {{ getUser.data.firstName }} {{ getUser.data.lastName }}</div>
+                                            <div>E-mail: {{ getUser.data.email }}</div>
+                                            <div>Cuenta de la red Blockchain: {{ getUser.data.bcAccount.accountHash }}</div>
+                                        </v-jumbotron>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-jumbotron>
 
+                        <v-jumbotron :gradient="gradientTop" dark height="auto" class="elevation-5">
                             <v-toolbar dark color="light-blue darken-4">
                                 <v-toolbar-title>Transacciones recibidas</v-toolbar-title>
                                 <v-spacer></v-spacer>
                             </v-toolbar>
 
-                            <span class="subheading" v-if="getUser.data.bcAccount.transactionsReceived != undefined && !getUser.data.bcAccount.transactionsReceived.length <= 0">
-                                <div v-for="accountTsctn in getUser.data.bcAccount.transactionsReceived" :key="accountTsctn.id">
-                                    <p>{{ accountTsctn }}</p>
-                                </div>
-                            </span>
+                            <v-container grid-list-lg v-if="getUser.data.bcAccount.transactionsReceived != undefined && !getUser.data.bcAccount.transactionsReceived.length <= 0">
+                                <v-layout row wrap>
+                                    <v-flex xs12 sm6 md4 lg3 v-for="(accountTsctn, i) in getUser.data.bcAccount.transactionsReceived" :key="i" >
+                                        <v-jumbotron height="auto">
+                                            <h1># {{ i }}</h1>
+                                            <div>De: {{ accountTsctn.fromName }}</div>
+                                            <div>
+                                                <h2>Contenido</h2>
+                                                <div>
+                                                    <div>Tipo de café: {{ accountTsctn.content.type }}</div>
+                                                    <div>Cantidad: {{ accountTsctn.content.balance }}</div>
+                                                </div>
+                                            </div>
+                                            <v-divider></v-divider>
+                                        </v-jumbotron>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
 
-                            <span class="subheading" v-else>
-                                <p>No hay historial de transacciones recibidas :(</p>
-                            </span>
+                            <v-container grid-list-lg v-else>
+                                <v-layout row wrap>
+                                    <v-flex lg12>
+                                        <v-jumbotron height="auto">
+                                            <h2>No hay historial de transacciones recibidas :(</h2>
+                                        </v-jumbotron>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
 
                             <v-btn flat
                             :loading="loading" :disabled="loading"
@@ -102,7 +129,8 @@ export default {
 
     data () {
         return {
-            gradient: 'to top, #1A237E, #5C6BC0',
+            gradientTop: 'to top, #1A237E, #1976D2',
+            gradientBottom: 'to top, #1976D2, #1A237E',
             email: '',
             password: '',
             loader: null,

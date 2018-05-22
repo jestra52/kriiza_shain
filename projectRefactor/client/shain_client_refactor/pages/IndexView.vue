@@ -71,25 +71,36 @@
                                     </v-container>
                                 </v-card-media>
 
-                                <v-layout row wrap justify-space-between v-if="getBcAccountData.transactionsReceived != undefined && !getBcAccountData.transactionsReceived.length <= 0">
-                                    <v-flex xs12 lg6 v-for="(accountTsctn, i) in getBcAccountData.transactionsReceived" :key="i" >
-                                        <v-card light>
-                                            <v-card-text >
-                                                <p class="card-text">
-                                                    {{ accountTsctn }}
-                                                </p>
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-flex>
-                                </v-layout>
+                                <v-container grid-list-lg>
+                                    <v-layout row wrap justify-space-between v-if="getBcAccountData.transactionsReceived != undefined && !getBcAccountData.transactionsReceived.length <= 0">
+                                        <v-flex xs12 sm6 md4 lg3 v-for="(accountTsctn, i) in getBcAccountData.transactionsReceived" :key="i" >
+                                            <v-card light color="blue lighten-3">
+                                                <v-card-text >
+                                                    <h1># {{ i }}</h1>
+                                                    <div>De: {{ accountTsctn.fromName }}</div>
+                                                    <v-divider light></v-divider>
+                                                    <div>
+                                                        <h2>Contenido</h2>
+                                                        <div>
+                                                            <div>Tipo de café: {{ accountTsctn.content.type }}</div>
+                                                            <div>Cantidad: {{ accountTsctn.content.balance }}</div>
+                                                        </div>
+                                                    </div>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-flex>
+                                    </v-layout>
 
-                                <v-layout row wrap v-else>
-                                    <v-flex xs12 lg6>
-                                        <span class="subheading">
-                                            <p>No te han enviado transacciones :(</p>
-                                        </span>
-                                    </v-flex>
-                                </v-layout>
+                                    <v-layout row wrap v-else>
+                                        <v-flex xs12 lg6>
+                                            <span class="subheading">
+                                                <p>No te han enviado transacciones :(</p>
+                                            </span>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+
+
 
                                 <v-card-actions>
                                     <v-btn flat
@@ -173,13 +184,21 @@
             <v-container grid-list-lg>
                 <v-layout row wrap>
                     <v-flex xs12 lg6 v-for="(transaction, i) in getAllTransactions" :key="i" >
-                        <v-card light>
+                        <v-card light color="blue lighten-3">
                             <v-card-text>
                                 <h1># {{ i }}</h1>
                                 <div>Dueño: {{ transaction.transactionInfo.transactionOwnerName }}</div>
                                 <div>Destinatario: {{ transaction.transactionInfo.toName }}</div>
-                                <div>Contenido: {{ transaction.transactionInfo.content }}</div>
+                                <v-divider light></v-divider>
+                                <div>
+                                    <h2>Contenido</h2>
+                                    <div>
+                                        <div>Tipo de café: {{ transaction.transactionInfo.content.type }}</div>
+                                        <div>Cantidad: {{ transaction.transactionInfo.content.balance }}</div>
+                                    </div>
+                                </div>
                                 <div>Hash de la transaccion: {{ transaction.transactionHash }}</div>
+                                <v-divider light></v-divider>
                                 <div>parentInfo: {{ transaction.parentInfo }}</div>
                             </v-card-text>
                         </v-card>

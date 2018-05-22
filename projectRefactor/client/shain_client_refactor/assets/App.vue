@@ -100,6 +100,7 @@ export default {
 
     data () {
         return {
+            gradientTop: 'to top, #1A237E, #1976D2',
             clipped: false,
             drawer: true,
             fixed: false,

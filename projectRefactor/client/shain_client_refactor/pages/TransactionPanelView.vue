@@ -74,7 +74,7 @@
                         <v-card-title primary-title>
                             <v-layout row wrap>
                                 <v-flex xs12 lg12>
-                                    <h3 class="headline mb-0">Cantidad</h3>
+                                    <h3 class="headline mb-0">Cantidad disponible</h3>
                                     <div>{{ getBalanceTostadoValue()}} KG</div>
                                 </v-flex>
 
@@ -153,200 +153,248 @@ console.log('WEB3', web3.eth);
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  data() {
-    return {
-      hash: "",
-      balanceVerde: "",
-      balanceTostado: "",
-      cantidadCafeVerde: "",
-      selectedVerde: null,
-      cantidadCafeTostado: "",
-      selectedTostado: "",
-      radioGroup: 1,
-      radioGroup2: 1,
-      accounts: []
-    };
-  },
-
-  computed: {
-    ...mapGetters([
-      "getUser",
-      "getErrorMessage",
-      "getBcAccounts",
-      "getTransactionInfo"
-    ])
-  },
-
-  methods: {
-    begin: function() {
-      this.$store.dispatch("getAllAccounts");
+    data() {
+        return {
+            hash: "",
+            balanceVerde: "",
+            balanceTostado: "",
+            cantidadCafeVerde: "",
+            selectedVerde: null,
+            cantidadCafeTostado: "",
+            selectedTostado: "",
+            radioGroup: 1,
+            radioGroup2: 1,
+            accounts: []
+        };
     },
-    getBalanceVerdeValue() {
-      this.getBalancesVerde();
-      return this.balanceVerde;
+
+    computed: {
+        ...mapGetters([
+            "getUser",
+            "getErrorMessage",
+            "getBcAccounts",
+            "getTransactionInfo"
+        ])
     },
-    getBalanceTostadoValue() {
-      this.getBalancesTostado();
-      return this.balanceTostado;
-    },
-    submitVerde() {
-      var amount = this.$data.cantidadCafeVerde;
-      var toAddress = this.$data.selectedVerde;
 
-      console.log("Transfer " + amount + " TT to " + toAddress);
+    methods: {
+        begin: function() {
+            this.$store.dispatch("getAllAccounts");
+        },
 
-      var cafeVerdeInstance;
-      var self = this;
-      self.$store.dispatch("getUserByAccount", toAddress);
+        getBalanceVerdeValue() {
+            this.getBalancesVerde();
+            return this.balanceVerde;
+        },
 
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
+        getBalanceTostadoValue() {
+            this.getBalancesTostado();
+            return this.balanceTostado;
+        },
 
-        var account = self.$store.state.user.data.bcAccount.accountHash;
-        MycontractVerde.deployed()
-          .then(function(instance) {
-            cafeVerdeInstance = instance;
-            return cafeVerdeInstance.transfer(toAddress, amount, {
-              from: account
+        submitVerde() {
+            var amount = this.$data.cantidadCafeVerde;
+            var toAddress = this.$data.selectedVerde;
+
+            console.log("Transfer " + amount + " TT to " + toAddress);
+
+            var cafeVerdeInstance;
+            var self = this;
+            self.$store.dispatch("getUserByAccount", toAddress);
+
+            web3.eth.getAccounts(function(error, accounts) {
+                if (error) {
+                console.log(error);
+                }
+
+                var account = self.$store.state.user.data.bcAccount.accountHash;
+                MycontractVerde.deployed()
+                .then(function(instance) {
+                    cafeVerdeInstance = instance;
+                    return cafeVerdeInstance.transfer(toAddress, amount, {
+                    from: account
+                    });
+                })
+                .then(function(result) {
+                    alert("Transfer Successful!");
+                    var transactionHash = result.receipt.transactionHash;
+                    var parentTransaction = web3.eth.getTransaction(transactionHash);
+                    console.log("Transfer: ", amount, " TT, from:", parentTransaction.from, ", to: ", toAddress);
+                    self.$store.dispatch("getParentByAccount", parentTransaction.from);
+
+                    //console.log(result.receipt);
+
+                    let data = self.submitVerdeHandler(self, amount, toAddress, parentTransaction, transactionHash);
+
+                    self.$store.dispatch("createTransaction", data);
+                    //self.$store.dispatch("removeParentDataByAccount");
+                    self.getBalancesVerde();
+                })
+                .catch(function(err) {
+                    console.log(err.message);
+                });
             });
-          })
-          .then(function(result) {
-            alert("Transfer Successful!");
-            var blockHash = result.receipt.blockHash;
+        },
+
+        submitVerdeHandler (self, amount, toAddress, parentTransaction, transactionHash) {
             var firstName = self.$store.getters.getUserDataByAccount.firstName;
             var lastName = self.$store.getters.getUserDataByAccount.lastName;
+
             let data = {
                 to: toAddress,
                 toName: firstName + " " + lastName,
                 content: {
-                  type: 'CafeVerde',
-                  balance: amount
+                    type: 'CafeVerde',
+                    balance: amount
                 },
-                transactionHash: blockHash
-            }
-            self.$store.dispatch("createTransaction", data);
-            self.getBalancesVerde();
-          })
-          .catch(function(err) {
-            console.log(err.message);
-          });
-      });
-    },
-    submitTostado() {
-      var amount = this.$data.cantidadCafeTostado;
-      var toAddress = this.$data.selectedTostado;
+                transactionHash: transactionHash,
+                parentTransactionHash: {
+                    accountHash: parentTransaction.from
+                }
+            };
 
-      console.log("Transfer " + amount + " TT to " + toAddress);
+            return data;
+        },
 
-      var cafeTostadoInstance;
-      var self = this;
+        submitTostado () {
+            var amount = this.$data.cantidadCafeTostado;
+            var toAddress = this.$data.selectedTostado;
 
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
+            var cafeTostadoInstance = null;
+            var self = this;
 
-        var account = self.$store.state.user.data.bcAccount.accountHash;
-        MycontractTostado.deployed()
-          .then(function(instance) {
-            cafeTostadoInstance = instance;
-            return cafeTostadoInstance.transfer(toAddress, amount, {
-              from: account
+            self.$store.dispatch("getUserByAccount", toAddress);
+
+            web3.eth.getAccounts(function(error, accounts) {
+                if (error) {
+                    console.log(error);
+                }
+
+                var account = self.$store.state.user.data.bcAccount.accountHash;
+
+                MycontractTostado.deployed().then(function (instance) {
+                    cafeTostadoInstance = instance;
+                    return cafeTostadoInstance.transfer(toAddress, amount, {
+                        from: account
+                    });
+                })
+                .then(function (result) {
+                    alert("Transfer Successful!");
+
+                    var transactionHash = result.receipt.transactionHash;
+                    var parentTransaction = web3.eth.getTransaction(transactionHash);
+                    console.log("Transfer: ", amount, " TT, from:", parentTransaction.from, ", to: ", toAddress);
+                    self.$store.dispatch("getParentByAccount", parentTransaction.from);
+
+                    //console.log(result.receipt);
+
+                    let data = self.submitTostadoHandler(self, amount, toAddress, parentTransaction, transactionHash);
+
+                    self.$store.dispatch("createTransaction", data);
+                    //self.$store.dispatch("removeParentDataByAccount");
+                    self.getBalancesTostado();
+                })
+                .catch(function(err) {
+                    console.log(err.message);
+                });
             });
-          })
-          .then(function(result) {
-            alert("Transfer Successful!");
-            var blockHash = result.receipt.blockHash;
+        },
+
+        submitTostadoHandler (self, amount, toAddress, parentTransaction, transactionHash) {
             var firstName = self.$store.getters.getUserDataByAccount.firstName;
             var lastName = self.$store.getters.getUserDataByAccount.lastName;
+
             let data = {
                 to: toAddress,
                 toName: firstName + " " + lastName,
                 content: {
-                  type: 'CafeTostado',
-                  balance: amount
+                    type: 'CafeTostado',
+                    balance: amount
                 },
-                transactionHash: blockHash
-            }
-            self.$store.dispatch("createTransaction", data);
-            self.getBalancesTostado();
-          })
-          .catch(function(err) {
-            console.log(err.message);
-          });
-      });
+                transactionHash: transactionHash,
+                parentTransactionHash: {
+                    accountHash: parentTransaction.from
+                }
+            };
+
+            return data;
+        },
+
+        getBalancesVerde() {
+            console.log("Getting balances...");
+            console.log(this.$data.selectedVerde);
+            var cafeVerdeInstance;
+            var self = this;
+
+            web3.eth.getAccounts(function(error, accounts) {
+                if (error) {
+                console.log(error);
+                }
+                var account = self.$store.state.user.data.bcAccount.accountHash;
+
+                MycontractVerde.deployed()
+                .then(function(instance) {
+                    cafeVerdeInstance = instance;
+                    //console.log(cafeVerdeInstance);
+                    return cafeVerdeInstance.balanceOf(account);
+                })
+                .then(function(result) {
+                    var balance = result.c[0];
+                    self.$data.balanceVerde = balance;
+                    self.$store.dispatch("currentBalanceVerde", balance);
+                })
+                .catch(function(err) {
+                    console.log(err.message);
+                });
+            });
+        },
+
+        getBalancesTostado() {
+            console.log("Getting balances...");
+
+            var cafeTostadoInstance;
+            var self = this;
+
+            web3.eth.getAccounts(function(error, accounts) {
+                if (error) {
+                    console.log(error);
+                }
+
+                var account = self.$store.state.user.data.bcAccount.accountHash;
+
+                MycontractTostado.deployed()
+                .then(function(instance) {
+                    cafeTostadoInstance = instance;
+                    return cafeTostadoInstance.balanceOf(account);
+                })
+                .then(function(result) {
+                    var balance = result.c[0];
+                    console.log(balance);
+
+                    self.$data.balanceTostado = balance;
+                    self.$store.dispatch("currentBalanceTostado", balance);
+                })
+                .catch(function(err) {
+                    console.log(err.message);
+                });
+            });
+        },
+
+        ...mapActions([
+            "getUserInfo",
+            "getAllAccounts",
+            "logout",
+            "currentBalanceTostado",
+            "currentBalanceVerde",
+            "getParentByAccount",
+            "getUserByAccount",
+            "removeParentDataByAccount"
+        ])
     },
-    getBalancesVerde() {
-      console.log("Getting balances...");
-      console.log(this.$data.selectedVerde);
-      var cafeVerdeInstance;
-      var self = this;
 
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
-        var account = self.$store.state.user.data.bcAccount.accountHash;
-
-        MycontractVerde.deployed()
-          .then(function(instance) {
-            cafeVerdeInstance = instance;
-            //console.log(cafeVerdeInstance);
-            return cafeVerdeInstance.balanceOf(account);
-          })
-          .then(function(result) {
-            var balance = result.c[0];
-            self.$data.balanceVerde = balance;
-            self.$store.dispatch("currentBalanceVerde", balance);
-          })
-          .catch(function(err) {
-            console.log(err.message);
-          });
-      });
-    },
-    getBalancesTostado() {
-      console.log("Getting balances...");
-
-      var cafeTostadoInstance;
-      var self = this;
-
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
-
-        var account = self.$store.state.user.data.bcAccount.accountHash;
-        MycontractTostado.deployed()
-          .then(function(instance) {
-            cafeTostadoInstance = instance;
-            return cafeTostadoInstance.balanceOf(account);
-          })
-          .then(function(result) {
-            var balance = result.c[0];
-            console.log(balance);
-
-            self.$data.balanceTostado = balance;
-            self.$store.dispatch("currentBalanceTostado", balance);
-          })
-          .catch(function(err) {
-            console.log(err.message);
-          });
-      });
-    },
-
-    ...mapActions([
-      "getUserInfo",
-      "getAllAccounts",
-      "logout",
-      "currentBalanceTostado",
-      "currentBalanceVerde"
-    ])
-  },
-  beforeMount() {
-    this.begin();
-  }
+    beforeMount() {
+        this.begin();
+    }
 };
 
 </script>

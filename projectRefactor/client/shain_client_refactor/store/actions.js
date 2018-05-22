@@ -52,6 +52,7 @@ export default {
             context.commit("addTransactionInfo", {});
             context.commit('addTotalTransactions', {});
             context.commit('addUserDataFromAccount', {});
+            context.commit('addParentDataFromAccount', {});
             context.commit("addError", {});
         }
     },
@@ -273,6 +274,48 @@ export default {
                 });
             });
 
+        }
+
+    },
+
+    getParentByAccount: (context, bcaccount) => {
+        if (!context.state.user.isLoggedIn) {
+            console.log('USER NOT AUTHENTICATED');
+        }
+        else {
+
+            let opts = {
+                headers: {
+                    'Authorization': 'Bearer ' + context.state.user.token,
+                    'bcaccount': bcaccount
+                }
+            };
+
+            axios.get(apiURL + '/api/users/getbyaccount', opts).then(res => {
+                console.log("RESPONSE:", {
+                    status: res.status,
+                    data: res.data.userData
+                });
+
+                context.commit('addParentDataFromAccount', res.data.userData);
+            })
+            .catch(err => {
+                console.log("RESPONSE:", {
+                    status: err.response.status,
+                    data: err.response.data
+                });
+            });
+
+        }
+
+    },
+
+    removeParentDataByAccount: (context) => {
+        if (!context.state.user.isLoggedIn) {
+            console.log('USER NOT AUTHENTICATED');
+        }
+        else {
+            context.commit('addParentDataFromAccount', {});
         }
 
     }

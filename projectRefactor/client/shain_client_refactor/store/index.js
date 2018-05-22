@@ -22,6 +22,7 @@ export function createStore () {
                 }
             },
             userDataByAccount: {},
+            parentDataByAccount: {},
             transactions: {},
             errorMessage: {},
             bcAccounts: {},
