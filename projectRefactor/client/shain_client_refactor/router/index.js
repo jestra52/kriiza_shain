@@ -10,7 +10,8 @@ function route (path, view) {
   return {
     path: path,
     meta: meta[path],
-    component: resolve => import(`pages/${view}View.vue`).then(resolve)
+    component: resolve => import(`pages/${view}View.vue`).then(resolve),
+    props: true
   }
 }
 
@@ -28,6 +29,8 @@ export function createRouter () {
         route('/signup', 'Signup'),
         route('/transaction', 'TransactionPanel'),
         route('/userinfo', 'UserInfo'),
+        route('/testparams/', 'TestParams'),
+        route('/testparams/:param', 'TestParams'),
         // Global redirect for 404
         { path: '*', redirect: '/' }
       ]
