@@ -25,7 +25,7 @@
                     <v-layout row wrap>
                         <v-flex xs12 lg6>
                             <v-card flat class="elevation-5" color="light-blue darken-1">
-                                <v-card-media src="/static/logged1.jpg" height="200px">
+                                <v-card-media src="/static/logged3.jpg" height="200px">
                                     <v-container fill-height fluid>
                                         <v-layout fill-height>
                                         <v-flex xs12 align-end flexbox>
@@ -43,7 +43,7 @@
 
                         <v-flex xs12 lg6>
                             <v-card flat class="elevation-5" color="light-blue darken-1">
-                                <v-card-media src="/static/sesion2.jpg" height="200px">
+                                <v-card-media src="/static/logged1.jpg" height="200px">
                                     <v-container fill-height fluid>
                                         <v-layout fill-height>
                                         <v-flex xs12 align-end flexbox>
@@ -61,7 +61,7 @@
 
                         <v-flex xs12 lg12>
                             <v-card flat class="elevation-5" color="light-blue darken-1">
-                                <v-card-media src="/static/sesion2.jpg" height="200px">
+                                <v-card-media src="/static/logged2.jpg" height="200px">
                                     <v-container fill-height fluid>
                                         <v-layout fill-height>
                                         <v-flex xs12 align-end flexbox>

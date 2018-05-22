@@ -6,13 +6,13 @@
             <v-layout align-center>
                 <div v-if="getUser != null && getUser.isLoggedIn != false">
                     <v-flex xs12>
-                        <h3 class="display-3">¡Bienvenido {{ getUser.data.firstName }}!</h3>
+                        <h3 class="display-3">¡Bienvenid@ {{ getUser.data.firstName }}!</h3>
                         <span class="subheading">
                             <p>Te has registrado exitosamente, nos alegra tenerte aquí</p>
                             <p>También te hemos asociado tu cuenta a la red Blockchain yay</p>
                         </span>
                         <v-snackbar top vertical :timeout=timeout v-model="snackbarlogin" auto-height>
-                            <p>¡Bienvenido {{ getUser.data.firstName }}!</p>
+                            <p>¡Bienvenid@ {{ getUser.data.firstName }}!</p>
                             <v-btn flat color="blue" @click.native="snackbarlogin = false">Cerrar</v-btn>
                         </v-snackbar>
                     </v-flex>
