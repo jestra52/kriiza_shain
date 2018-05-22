@@ -72,7 +72,7 @@
                                 </v-card-media>
 
                                 <v-container grid-list-lg>
-                                    <v-layout row wrap justify-space-between v-if="getBcAccountData.transactionsReceived != undefined && !getBcAccountData.transactionsReceived.length <= 0">
+                                    <v-layout row justify-space-between v-if="getBcAccountData.transactionsReceived != undefined && !getBcAccountData.transactionsReceived.length <= 0">
                                         <v-flex xs12 sm6 md4 lg3 v-for="(accountTsctn, i) in getBcAccountData.transactionsReceived" :key="i" >
                                             <v-card light color="blue lighten-3">
                                                 <v-card-text >
@@ -83,7 +83,7 @@
                                                         <h2>Contenido</h2>
                                                         <div>
                                                             <div>Tipo de café: {{ accountTsctn.content.type }}</div>
-                                                            <div>Cantidad: {{ accountTsctn.content.balance }}</div>
+                                                            <div>Cantidad: {{ accountTsctn.content.balance }} KG</div>
                                                         </div>
                                                     </div>
                                                 </v-card-text>
@@ -194,7 +194,7 @@
                                     <h2>Contenido</h2>
                                     <div>
                                         <div>Tipo de café: {{ transaction.transactionInfo.content.type }}</div>
-                                        <div>Cantidad: {{ transaction.transactionInfo.content.balance }}</div>
+                                        <div>Cantidad: {{ transaction.transactionInfo.content.balance }} KG</div>
                                     </div>
                                 </div>
                                 <div>Hash de la transaccion: {{ transaction.transactionHash }}</div>

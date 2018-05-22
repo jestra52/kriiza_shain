@@ -45,7 +45,7 @@
                                                 <h2>Contenido</h2>
                                                 <div>
                                                     <div>Tipo de café: {{ accountTsctn.content.type }}</div>
-                                                    <div>Cantidad: {{ accountTsctn.content.balance }}</div>
+                                                    <div>Cantidad: {{ accountTsctn.content.balance }} KG</div>
                                                 </div>
                                             </div>
                                             <v-divider></v-divider>
