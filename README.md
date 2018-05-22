@@ -19,22 +19,21 @@ $ sudo npm install -g solc
 $ git clone https://github.com/jestra52/kriiza_shain.git
 $ cd kriiza_shain/projectRefactor/server/
 $ npm install
-$ node app.js 
-(If you have Gulp installed then: $ gulp)
+$ node app.js # if you have Gulp installed then: $ gulp
 ```
 
 ## To run Ganache test network
 ```bash
-$ cd ../client/shain_client_refactor/ (from server/ path)
+$ cd ../client/shain_client_refactor/ # from server/ path
 $ npm install
-$ ganache-cli -a 100 -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat" --port 7545 (for test network)
+$ ganache-cli -a 100 -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat" --port 7545 # for test network
 $ cd contracts/
-$ truffle migrate (running test network or ethereum network)
+$ truffle migrate # running test network or ethereum network
 ```
 
 ## Installing and running client
 ```bash
-$ cd ../client/shain_client_refactor/ (from server/ path)
+$ cd ../client/shain_client_refactor/ # from server/ path
 $ npm install
-$ npm run dev (running server RESTful API)
+$ npm run dev # running server RESTful API
 ```
