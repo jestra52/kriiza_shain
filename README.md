@@ -25,16 +25,16 @@ $ node app.js
 
 ## To run Ganache test network
 ```bash
-$ cd ../client/shain_client/ (from server/ path)
+$ cd ../client/shain_client_refactor/ (from server/ path)
 $ npm install
+$ ganache-cli -a 100 -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat" --port 7545 (for test network)
+$ cd contracts/
 $ truffle migrate (running test network or ethereum network)
-$ npm run dev
 ```
 
 ## Installing and running client
 ```bash
-$ cd ../client/shain_client/ (from server/ path)
+$ cd ../client/shain_client_refactor/ (from server/ path)
 $ npm install
-$ truffle migrate (running test network or ethereum network)
 $ npm run dev (running server RESTful API)
 ```
