@@ -7,5 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "web3": "github:ethereum/web3.js",
+    "web3-provider-engine": "^14.0.5",
+    "zeppelin-solidity": "^1.8.0",
+    "truffle-contract": "^3.0.5"
+  }
 }
