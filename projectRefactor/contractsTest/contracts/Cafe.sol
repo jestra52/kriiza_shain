@@ -9,15 +9,18 @@ contract Cafe {
     uint cantidadCafe;
     address owner;
     
-    constructor (string _tipoCafe, string _factorNaturaleza, string _factorHumano, string _factorTradicion, uint _cantidadCafe) public {
+    function Cafe(string _tipoCafe, string _factorNaturaleza, string _factorHumano, string _factorTradicion, uint _cantidadCafe) public {
         owner = msg.sender;
         setTipoCafe(_tipoCafe);
         setFactorNaturaleza(_factorNaturaleza);
         setFactorHumano(_factorHumano);
         setFactorTradicion(_factorTradicion);
         setCantidadCafe(_cantidadCafe);
+        emit Print(_tipoCafe,_factorNaturaleza,_factorHumano,_factorTradicion,_cantidadCafe);
     }
     
+    event Print(string _tipoCafe, string _factorNaturaleza,string _factorHumano, string _factorTradicion,uint _cantidadCafe);
+
     modifier onlyOwner {
         require(msg.sender == owner);
         _;

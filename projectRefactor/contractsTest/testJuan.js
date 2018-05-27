@@ -13,7 +13,7 @@ let MyContractCafe = truffleContract(contractCafe);
 
 MyContractCafe.setProvider(provider);
 
-createContractCafe("CafeVerde", "fdihgfodihg", "difgohdfoig", "diufghdif", 1200);
+createContractCafe("CafeHola", "Juanito salkjfda", "Iyo", "nel", 1600);
 //console.log(getActualValues());
 //getActualValues()
 
@@ -32,7 +32,7 @@ function createContractCafe (tipoCafe, factorNaturaleza, factorHumano, factorTra
                 address: instance.address,
                 transactionHash: instance.transactionHash
             };
-
+            
             getTransaction(data.transactionHash);
         })
         .catch(err => {
@@ -49,14 +49,10 @@ function getTransaction (transactionHash) {
 
         abiDecoder.addABI(contractCafe.abi);
 
-        const decodedData = abiDecoder.decodeMethod(result.input);
-
-        console.log(decodedData);       
-
-
-        /*var Cafesito = web3.eth.contract(contractCafe.abi);
-        const decodedData = abiDecoder.decodeMethod(result.input);
-        //console.log(result);
-        console.log(Cafesito.at('0xf4838063e6eFd469Cfe9c17bc9F481Eccd6036A3').getTipoCafe());*/
+        web3.eth.getTransactionReceipt(transactionHash, function(e, receipt) {
+            const decodedLogs = abiDecoder.decodeLogs(receipt.logs);
+            console.log(decodedLogs[0].events);
+            
+        });
     });
 }
