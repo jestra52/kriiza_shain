@@ -7,6 +7,7 @@ const userController       = require('../controllers/user/exports');
 const authController       = require('../controllers/auth/exports');
 const bcaccountsController = require('../controllers/bcaccounts/exports');
 const bctsctnController    = require('../controllers/bctransactions/exports');
+const hashController       = require('../controllers/hash/exports');
 const config               = require('../config/config');
 
 apiRouter.get('/', (req, res) => {
@@ -77,5 +78,10 @@ apiRouter.get('/bcaccount/:id', verifyToken, bcaccountsController.getAccountByUs
 
 apiRouter.put('/bctransactions/create/:id', verifyToken, bctsctnController.create);
 apiRouter.get('/bctransactions/', bctsctnController.getAll);
+
+apiRouter.get('/hash/:id', verifyToken, hashController.get);
+apiRouter.get('/hash/getallby/:id', verifyToken, hashController.getAllByUserId);
+apiRouter.post('/hash/create/:id', verifyToken, hashController.create);
+apiRouter.put('/hash/update/:id', verifyToken, hashController.update);
 
 module.exports = apiRouter;
