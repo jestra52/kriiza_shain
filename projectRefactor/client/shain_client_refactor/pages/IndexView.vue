@@ -1,10 +1,11 @@
 <template>
     <v-content>
 
-        <v-parallax src="/static/indexBackground.jpg">
+        <v-parallax src="/static/bg.png" light>
             <v-layout column align-center justify-center class="white--text">
-                <h1 class="white--text mb-2 display-1 text-xs-center">Bienvenido a SHAIN</h1>
-                <div class="subheading mb-3 text-xs-center">El lugar donde puedes comprobar la legitimidad de tu producto</div>
+                <img src="/static/Shain-2.png" alt="Vuetify.js" height="200">
+                <h1 class="black--text mb-2 display-1 text-xs-center">Bienvenido a SHAIN</h1>
+                <div class="black--text subheading mb-3 text-xs-center">El lugar donde puedes comprobar la legitimidad de tu producto</div>
             </v-layout>
         </v-parallax>
 
@@ -162,10 +163,10 @@
 
         </v-jumbotron>
 
-        <v-parallax src="/static/indexBackground.jpg" height="380">
+        <v-parallax src="/static/bcbg.jpg" height="380">
             <v-layout column align-center justify-center>
-                <div class="headline white--text mb-3 text-xs-center">Transacciones de café</div>
-                <em>Realiza transacciones de café donde quieras</em>
+                <div class="headline white--text mb-3 text-xs-center">Utilizamos tecnología de punta</div>
+                <em>Hacemos uso de una tecnología llamada Blockchain para proteger tus transacciones de café.</em>
             </v-layout>
         </v-parallax>
 

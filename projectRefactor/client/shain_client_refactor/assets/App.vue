@@ -2,7 +2,7 @@
     <v-app light class="blue darken-2">
 
         <v-toolbar fixed app :clipped-left="clipped">
-            <v-btn icon active-class to="/"><img src=""></v-btn>
+            <v-btn icon active-class to="/"><img src="/static/shainicon.png"></v-btn>
             <v-toolbar-title v-text="title"></v-toolbar-title>
             <v-spacer></v-spacer>
 
