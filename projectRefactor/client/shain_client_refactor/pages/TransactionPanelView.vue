@@ -31,9 +31,9 @@
                                     <h3 class="headline mb-0">Productos disponibles</h3>
                                     <v-select
                                     :items="GET_TX_HASHES_BY_ID"
-                                    item-text="hashesValues"
+                                    item-text="txValue"
                                     v-model="selectedCafe"
-                                    item-value="hashes"
+                                    item-value="_id"
                                     label="Seleccione uno de sus productos"
                                     color="blue darken-2"
                                     ></v-select>
@@ -57,7 +57,7 @@
 
                         <v-card-actions>
                             <v-btn flat color="green">Más detalles</v-btn>
-                            <v-btn flat color="green" @click="">Enviar</v-btn>
+                            <v-btn flat color="green" @click="transferBlock()">Enviar</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
@@ -120,12 +120,23 @@
                                     type="text">
                                     </v-text-field>
                                 </v-flex>
+
+                                <v-flex xs12 lg12>
+                                    <h3 class="headline mb-0">Cantidad hecha</h3>
+                                    <v-text-field
+                                    color="blue darken-2"
+                                    name="cantidadCafe"
+                                    v-model="cantidadCafe"
+                                    label="Cantidad"
+                                    type="text">
+                                    </v-text-field>
+                                </v-flex>
                             </v-layout>
                         </v-card-title>
 
                         <v-card-actions>
                             <v-btn flat color="green">Más detalles</v-btn>
-                            <v-btn flat color="green" @click="">Enviar</v-btn>
+                            <v-btn to="/transaction" flat color="green" @click="createC()">Enviar</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
@@ -179,7 +190,7 @@ export default {
             balanceVerde: "",
             balanceTostado: "",
             cantidadCafeVerde: "",
-            selectedVerde: null,
+            selectedVerde: "",
             cantidadCafeTostado: "",
             selectedTostado: "",
             radioGroup: 1,
@@ -208,10 +219,30 @@ export default {
         begin: function() {
             this.$store.dispatch("getAllAccounts");
             this.$store.dispatch('getHashesByUserId');
+            
         },
 
         getHashes: function () {
             this.$store.dispatch('getHashesByUserId');
+        },
+        createC() { 
+            this.$store.dispatch('createContract',{
+                tipoCafe: this.$data.factorNaturaleza,
+                factorNaturaleza: this.$data.factorNaturaleza,
+                factorHumano: this.$data.factorHumano,
+                factorTradicion: this.$data.factorTradicion,
+                cantidadCafe: this.$data.cantidadCafe
+            });
+
+            alert('REGISTRO GUARDADO. POR FAVOR RECARGUE LA PAGINA');
+        },
+        transferBlock() {
+            this.$store.dispatch('transactionHash',{
+                idToTransfer: this.$data.selectedVerde,
+                hashId: this.$data.selectedCafe
+            });
+
+            alert('TRANSACCIÓN REALIZADA. POR FAVOR RECARGUE LA PAGINA');
         },
 
         /*getBalanceVerdeValue() {
@@ -421,7 +452,9 @@ export default {
             "getParentByAccount",
             "getUserByAccount",
             "removeParentDataByAccount",
-            "getHashesByUserId"
+            "getHashesByUserId",
+            "createContract",
+            "transactionHash"
         ])
     },
 

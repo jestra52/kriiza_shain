@@ -73,18 +73,21 @@
                                 </v-card-media>
 
                                 <v-container grid-list-lg>
-                                    <v-layout row justify-space-between v-if="getBcAccountData.transactionsReceived != undefined && !getBcAccountData.transactionsReceived.length <= 0">
-                                        <v-flex xs12 sm6 md4 lg3 v-for="(accountTsctn, i) in getBcAccountData.transactionsReceived" :key="i" >
+                                    <v-layout row justify-space-between v-if="GET_TX_HASHES_BY_ID != undefined && !GET_TX_HASHES_BY_ID.length <= 0">
+                                        <v-flex xs12 sm6 md4 lg3 v-for="(accountTsctn, i) in GET_TX_HASHES_BY_ID" :key="i" >
                                             <v-card light color="blue lighten-3">
                                                 <v-card-text >
                                                     <h1># {{ i }}</h1>
-                                                    <div>De: {{ accountTsctn.fromName }}</div>
+                                                    <v-divider light></v-divider>
+                                                    <div>
+                                                        <h2>Dueños anteriores</h2><div v-for="(owners, i) in accountTsctn.history" :key="i">
+                                                            {{ owners }}
+                                                        </div></div>
                                                     <v-divider light></v-divider>
                                                     <div>
                                                         <h2>Contenido</h2>
                                                         <div>
-                                                            <div>Tipo de café: {{ accountTsctn.content.type }}</div>
-                                                            <div>Cantidad: {{ accountTsctn.content.balance }} KG</div>
+                                                            <div>Cantidad: {{ accountTsctn.txValue }} KG</div>
                                                         </div>
                                                     </div>
                                                 </v-card-text>
@@ -184,26 +187,22 @@
 
             <v-container grid-list-lg>
                 <v-layout row wrap>
-                    <v-flex xs12 lg6 v-for="(transaction, i) in getAllTransactions" :key="i" >
-                        <v-card light color="blue lighten-3">
-                            <v-card-text>
-                                <h1># {{ i }}</h1>
-                                <div>Dueño: {{ transaction.transactionInfo.transactionOwnerName }}</div>
-                                <div>Destinatario: {{ transaction.transactionInfo.toName }}</div>
-                                <v-divider light></v-divider>
-                                <div>
-                                    <h2>Contenido</h2>
-                                    <div>
-                                        <div>Tipo de café: {{ transaction.transactionInfo.content.type }}</div>
-                                        <div>Cantidad: {{ transaction.transactionInfo.content.balance }} KG</div>
+                    <div v-for="(transaction, i) in GET_ALL_TX_HASHES_BY_ID" :key="i">
+                        <v-flex xs12 lg6 v-for="(innerTransaction, j) in transaction" :key="j">
+                            <v-card light color="blue lighten-3">
+                                <v-card-text>
+                                    <h1># {{ j }}</h1>
+                                    <div>Dueño actual: {{ innerTransaction.actualOwner }}</div>
+                                    <div>Hash de la transaccion: {{ innerTransaction.txHash }} </div>
+                                    <v-divider light></v-divider>
+                                    <h2>Dueños anteriores</h2>
+                                    <div v-for="(owner, i) in innerTransaction.history" :key="i">
+                                        {{ owner }}
                                     </div>
-                                </div>
-                                <div>Hash de la transaccion: {{ transaction.transactionHash }}</div>
-                                <v-divider light></v-divider>
-                                <div>parentInfo: {{ transaction.parentInfo }}</div>
-                            </v-card-text>
-                        </v-card>
-                    </v-flex>
+                                </v-card-text>
+                            </v-card>
+                        </v-flex>
+                    </div>
                 </v-layout>
 
                 <v-btn :loading="loading" :disabled="loading" color="success"
@@ -242,7 +241,9 @@ export default {
             'getUser',
             'getErrorMessage',
             'getAllTransactions',
-            'getBcAccountData'
+            'getBcAccountData',
+            "GET_TX_HASHES_BY_ID",
+            "GET_ALL_TX_HASHES_BY_ID"
         ])
     },
 
@@ -258,13 +259,19 @@ export default {
     },
 
     methods: {
+        begin: function() {
+            //this.$store.dispatch("getAllAccounts");
+            this.$store.dispatch('getHashesByUserId');
+            
+        },
+
         submit () {
             this.$store.dispatch('getUserInfo');
         },
 
         bringtransactions () {
-            this.$store.dispatch('getTransactions');
-            this.$data.transactions = this.$store.state.transactions;
+            this.$store.dispatch('getAllHashes');
+            this.$data.transactions = this.$store.state.bcAllTxHashes;
         },
 
         makeTransaction () {
@@ -290,8 +297,13 @@ export default {
             'getUserInfo',
             'getTransactions',
             'createTransaction',
-            'getAccountByUserId'
+            'getAccountByUserId',
+            'getHashesByUserId'
         ])
+    },
+
+    beforeMount() {
+        this.begin();
     }
 }
 

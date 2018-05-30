@@ -33,7 +33,7 @@ let getAll = (req, res) => {
         for (var i = 0; i < users.length; i++)
             bcAccounts.push({
                 owner: users[i].firstName + ' ' + users[i].lastName,
-                bcAccount: users[i].bcAccount.accountHash,
+                bcAccount: users[i]._id,
                 createdAt: users[i].createdAt,
                 updatedAt: users[i].updatedAt
             });

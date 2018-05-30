@@ -4,6 +4,10 @@ export default {
         state.bcTxHashes = txHashes;
     },
 
+    addAllTxHashes: (state, txHashes) => {
+        state.bcAllTxHashes = txHashes;
+    },
+
     addWebToken: (state, token) => {
         state.user.token = token;
         state.user.isLoggedIn = true;

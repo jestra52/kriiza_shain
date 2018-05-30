@@ -28,7 +28,8 @@ export function createStore () {
             bcAccounts: {},
             bcAccountData: {},
             bcContractTransactions: {},
-            bcTxHashes: {}
+            bcTxHashes: {},
+            bcAllTxHashes: {}
         },
 
         actions,

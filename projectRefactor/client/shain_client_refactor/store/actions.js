@@ -26,6 +26,7 @@ export default {
 
             axios.get(apiURL + '/api/hash/getallby/' + id, opts).then(res => {
                 let array = [];
+                let i = 0;
 
                 res.data.hashes.forEach(hash => {
                     console.log('HASH', hash.txHash);
@@ -35,16 +36,16 @@ export default {
 
                     axios.get(apiURL + '/api/contract/' + hash.txHash, opts).then(resH => {
                         //console.log('SFSFSSFSFS', resH);
-                        array.push(resH.data.data[4].value + " KG de " + resH.data.data[0].value);
-
+                        var txValue = resH.data.data[4].value + " KG de " + resH.data.data[0].value;
+                        res.data.hashes[i]["txValue"] = txValue;
+                        i = i +1
                         console.log("RESPONSE:", {
                             status: res.status,
                             data: res.data
                         });
 
                         context.commit('addTxHashes', {
-                            hashes: res.data.hashes,
-                            hashesValues: array
+                            hashes: res.data.hashes
                         });
                     })
                     .catch(errH => {
@@ -53,6 +54,7 @@ export default {
                             data: errH.response.data
                         });
                     });
+                    
                 });
 
 
@@ -66,7 +68,58 @@ export default {
         }
     },
 
+    getAllHashes: (context) => {
+
+        axios.get(apiURL + '/api/hash/get/all/').then(res => {
+            let array = [];
+            let i = 0;
+
+            res.data.hashes.forEach(hash => {
+                console.log('HASH', hash.txHash);
+
+                //let hola =  getATxByHash('0x6cd9536223281043004402daabfa4bbac38b3d303bd511cf362daafe3eac8b8b', opts);
+                //console.log('TX', hola);
+
+                context.commit('addAllTxHashes', {
+                    hashes: res.data.hashes
+                });
+
+                axios.get(apiURL + '/api/contract/' + hash.txHash, opts).then(resH => {
+                    //console.log('SFSFSSFSFS', resH);
+                    var txValue = resH.data.data[4].value + " KG de " + resH.data.data[0].value;
+                    res.data.hashes[i]["txValue"] = txValue;
+                    i = i +1
+                    console.log("RESPONSE:", {
+                        status: res.status,
+                        data: res.data
+                    });
+
+                    context.commit('addTxHashes', {
+                        hashes: res.data.hashes
+                    });
+                })
+                .catch(errH => {
+                    console.log("RESPONSE:", {
+                        status: errH.response.status,
+                        data: errH.response.data
+                    });
+                });
+                
+            });
+
+
+        })
+        .catch(err => {
+            console.log("RESPONSE:", {
+                status: err.response.status,
+                data: err.response.data
+            });
+        });
+    },
+
     login: (context, userInfo) => {
+        console.log(userInfo);
+        
         axios.post(apiURL + '/api/auth/login', {
             email: userInfo.email,
             password: userInfo.password
@@ -92,6 +145,62 @@ export default {
                     data: err.response.data
                 });*/
             });
+    },
+    createContract: (context, contractInfo) => {
+        if (!context.state.user.isLoggedIn) {
+            console.log('USER NOT AUTHENTICATED');
+        }
+        else {
+            let id   = context.state.user.data._id;
+            let opts = {
+                headers: {
+                    'Authorization': 'Bearer ' + context.state.user.token
+                }
+            };
+            
+            console.log(contractInfo);
+            
+            let data = {
+                tipoCafe: contractInfo.tipoCafe,
+                factorNaturaleza: contractInfo.factorNaturaleza,
+                factorHumano: contractInfo.factorHumano,
+                factorTradicion: contractInfo.factorTradicion,
+                cantidadCafe: contractInfo.cantidadCafe
+            };
+            axios.post(apiURL + '/api/contract/create/', data,opts).then(res => {
+                axios.post(apiURL + '/api/hash/create/'+id, {txHash:res.data.transactionHash},opts).then(resH => {
+                    console.log("RESPONSE:", {
+                        status: resH.status,
+                        data: resH.data
+                    }); 
+                });
+                console.log("RESPONSE:", {
+                    status: res.status,
+                    data: res.data
+                });
+            });
+        }
+    },
+    transactionHash: (context, transactionInfo) =>{
+        if (!context.state.user.isLoggedIn) {
+            console.log('USER NOT AUTHENTICATED');
+        }
+        else {
+            let id   = context.state.user.data._id;
+            let opts = {
+                headers: {
+                    'Authorization': 'Bearer ' + context.state.user.token
+                }
+            };
+            axios.put(apiURL + '/api/hash/update/'+ transactionInfo.idToTransfer, {hashId:transactionInfo.hashId},opts).then(res => {
+                console.log("RESPONSE:", {
+                    status: res.status,
+                    data: res.data
+                });
+            }).catch(err => {
+                console.log(err);
+            })
+        }
     },
 
     // To do in API

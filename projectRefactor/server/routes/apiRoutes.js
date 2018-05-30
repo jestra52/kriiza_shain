@@ -82,6 +82,7 @@ apiRouter.get('/bctransactions/', bctsctnController.getAll);
 
 apiRouter.get('/hash/:id', verifyToken, hashController.get);
 apiRouter.get('/hash/getallby/:id', verifyToken, hashController.getAllByUserId);
+apiRouter.get('/hash/get/all', hashController.getAll);
 apiRouter.post('/hash/create/:id', verifyToken, hashController.create);
 apiRouter.put('/hash/update/:id', verifyToken, hashController.update);
 
