@@ -8,6 +8,7 @@ const authController       = require('../controllers/auth/exports');
 const bcaccountsController = require('../controllers/bcaccounts/exports');
 const bctsctnController    = require('../controllers/bctransactions/exports');
 const hashController       = require('../controllers/hash/exports');
+const contractController   = require('../controllers/bcContracts');
 const config               = require('../config/config');
 
 apiRouter.get('/', (req, res) => {
@@ -83,5 +84,8 @@ apiRouter.get('/hash/:id', verifyToken, hashController.get);
 apiRouter.get('/hash/getallby/:id', verifyToken, hashController.getAllByUserId);
 apiRouter.post('/hash/create/:id', verifyToken, hashController.create);
 apiRouter.put('/hash/update/:id', verifyToken, hashController.update);
+
+apiRouter.post('/contract/create', verifyToken, contractController.createContractCafe);
+apiRouter.get('/contract/:txhash', verifyToken, contractController.getTransaction);
 
 module.exports = apiRouter;

@@ -35,6 +35,8 @@
     "normalize-path": "^3.0.0",
     "web3": "github:ethereum/web3.js",
     "web3-provider-engine": "^14.0.5",
-    "zeppelin-solidity": "^1.8.0"
+    "zeppelin-solidity": "^1.8.0",
+    "abi-decoder": "^1.1.0",
+    "truffle-contract": "^3.0.5"
   }
 }

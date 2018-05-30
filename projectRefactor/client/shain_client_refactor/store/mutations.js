@@ -1,5 +1,9 @@
 export default {
 
+    addTxHashes: (state, txHashes) => {
+        state.bcTxHashes = txHashes;
+    },
+
     addWebToken: (state, token) => {
         state.user.token = token;
         state.user.isLoggedIn = true;

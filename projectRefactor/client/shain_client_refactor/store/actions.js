@@ -12,6 +12,60 @@ web3.setProvider(new web3.providers.HttpProvider(config.ethNetwork));
 
 export default {
 
+    getHashesByUserId: (context) => {
+        if (!context.state.user.isLoggedIn) {
+            console.log('USER NOT AUTHENTICATED');
+        }
+        else {
+            let id   = context.state.user.data._id;
+            let opts = {
+                headers: {
+                    'Authorization': 'Bearer ' + context.state.user.token
+                }
+            };
+
+            axios.get(apiURL + '/api/hash/getallby/' + id, opts).then(res => {
+                let array = [];
+
+                res.data.hashes.forEach(hash => {
+                    console.log('HASH', hash.txHash);
+
+                    //let hola =  getATxByHash('0x6cd9536223281043004402daabfa4bbac38b3d303bd511cf362daafe3eac8b8b', opts);
+                    //console.log('TX', hola);
+
+                    axios.get(apiURL + '/api/contract/' + hash.txHash, opts).then(resH => {
+                        //console.log('SFSFSSFSFS', resH);
+                        array.push(resH.data.data[4].value + " KG de " + resH.data.data[0].value);
+
+                        console.log("RESPONSE:", {
+                            status: res.status,
+                            data: res.data
+                        });
+
+                        context.commit('addTxHashes', {
+                            hashes: res.data.hashes,
+                            hashesValues: array
+                        });
+                    })
+                    .catch(errH => {
+                        console.log("RESPONSE:", {
+                            status: errH.response.status,
+                            data: errH.response.data
+                        });
+                    });
+                });
+
+
+            })
+            .catch(err => {
+                console.log("RESPONSE:", {
+                    status: err.response.status,
+                    data: err.response.data
+                });
+            });
+        }
+    },
+
     login: (context, userInfo) => {
         axios.post(apiURL + '/api/auth/login', {
             email: userInfo.email,
@@ -53,6 +107,9 @@ export default {
             context.commit('addTotalTransactions', {});
             context.commit('addUserDataFromAccount', {});
             context.commit('addParentDataFromAccount', {});
+            context.commit('addUserDataFromAccount', {});
+            context.commit('addParentDataFromAccount', {});
+            context.commit('addTxHashes', {});
             context.commit("addError", {});
         }
     },

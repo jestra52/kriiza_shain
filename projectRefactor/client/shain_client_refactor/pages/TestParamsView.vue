@@ -50,12 +50,12 @@ const web3 = new Web3();
 //import contractVerde from '../output/CafeVerde.json';
 //import contractTostado from '../output/CafeTostado.json';
 
-const contractVerde = require("../output/CafeVerde.json");
+/*const contractVerde = require("../output/CafeVerde.json");
 const contractTostado = require("../output/CafeTostado.json");
 web3.setProvider(new web3.providers.HttpProvider(config.ethNetwork));
 const abiDecoder = require('abi-decoder');
 const testABI = require("../output/CafeVerde.json");
-abiDecoder.addABI(testABI.abi);
+abiDecoder.addABI(testABI.abi);*/
 
 export default {
     data () {
@@ -65,18 +65,18 @@ export default {
         }
     },
     methods:{
-         begin: function() {
-             var transaction = web3.eth.getTransaction(this.$data.params.param);
-             const testData = transaction.input;
-             const decodedData = abiDecoder.decodeMethod(testData);  
-             this.$data.hola.push(transaction.from);
-             this.$data.hola.push(transaction.to);
-             this.$data.hola.push(decodedData.params[1].value)
-         }
+        /*begin: function() {
+            var transaction = web3.eth.getTransaction(this.$data.params.param);
+            const testData = transaction.input;
+            const decodedData = abiDecoder.decodeMethod(testData);
+            this.$data.hola.push(transaction.from);
+            this.$data.hola.push(transaction.to);
+            this.$data.hola.push(decodedData.params[1].value)
+        }*/
     },
-    beforeMount() {
-    this.begin();
-  }
+    /*beforeMount() {
+        this.begin();
+    }*/
 }
 
 </script>

@@ -10,8 +10,9 @@ module.exports = {
     rootPath: normalize(process.cwd()),
     secret: 'CUM971007EVA01JOZ' || process.env.TOKEN_SECRET,
     tokenExpiresIn: 1800,
+    ethNetwork: process.env.ETH_NETWORK || 'http://127.0.0.1:7545',
     app: {
-        name: 'kriiza_shain'
+        name: 'kriiza_shain_server'
     }
 
 };

@@ -15,6 +15,7 @@ let UserSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     bcAccount: { type: BCAccount, required: true },
     bcTransactions: [ BCTransaction ],
+    admin: { type: Boolean, default: false},
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true }
 

@@ -93,6 +93,9 @@ let create = (req, res) => {
                         }
 
                         // Setting schema attributes
+                        if (req.body.admin)
+                            userToCreate.admin = req.body.admin
+                        
                         userToCreate.email     = req.body.email;
                         userToCreate.password  = hashedPassword;
                         userToCreate.firstName = req.body.firstName;

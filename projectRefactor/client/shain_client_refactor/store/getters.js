@@ -1,5 +1,19 @@
 export default {
 
+    GET_TX_HASHES_BY_ID: (state) => {
+        let hashes = [];
+
+        if (state.bcTxHashes.hashes)
+            state.bcTxHashes.hashes.forEach(hash => {
+                hashes.push(hash.txHash);
+            });
+
+        return {
+            hashes: hashes,
+            hashesValues: state.bcTxHashes.hashesValues
+        };
+    },
+
     getUser: (state) => {
         return state.user;
     },

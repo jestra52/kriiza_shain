@@ -26,7 +26,9 @@ export function createStore () {
             transactions: {},
             errorMessage: {},
             bcAccounts: {},
-            bcAccountData: {}
+            bcAccountData: {},
+            bcContractTransactions: {},
+            bcTxHashes: {}
         },
 
         actions,

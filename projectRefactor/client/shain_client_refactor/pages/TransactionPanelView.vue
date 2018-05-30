@@ -21,15 +21,23 @@
                 <v-flex xs12 md6 lg6>
                     <v-card flat class="elevation-5">
                         <v-toolbar dark color="blue darken-4">
-                            <v-toolbar-title>Café verde</v-toolbar-title>
+                            <v-toolbar-title>Realizar transferencia</v-toolbar-title>
                             <v-spacer></v-spacer>
                         </v-toolbar>
 
                         <v-card-title primary-title>
                             <v-layout row wrap>
                                 <v-flex xs12 lg12>
-                                    <h3 class="headline mb-0">Cantidad disponible</h3>
-                                    <div>{{ getBalanceVerdeValue() }} KG</div>
+                                    <h3 class="headline mb-0">Productos disponibles</h3>
+                                    <v-select
+                                    :items="GET_TX_HASHES_BY_ID"
+                                    item-text="hashesValues"
+                                    v-model="selectedCafe"
+                                    item-value="hashes"
+                                    label="Seleccione uno de sus productos"
+                                    color="blue darken-2"
+                                    ></v-select>
+                                    <!--<div>{{ getBalanceVerdeValue() }} KG</div>-->
                                 </v-flex>
 
                                 <v-flex xs12 lg12>
@@ -44,22 +52,12 @@
                                     ></v-select>
                                 </v-flex>
 
-                                <v-flex xs12 lg12>
-                                    <h3 class="headline mb-0">Cantidad a enviar</h3>
-                                    <v-text-field
-                                    color="blue darken-2"
-                                    name="cantidadCafeVerde"
-                                    v-model="cantidadCafeVerde"
-                                    label=""
-                                    type="text">
-                                    </v-text-field>
-                                </v-flex>
                             </v-layout>
                         </v-card-title>
 
                         <v-card-actions>
                             <v-btn flat color="green">Más detalles</v-btn>
-                            <v-btn flat color="green" @click="submitVerde()">Enviar</v-btn>
+                            <v-btn flat color="green" @click="">Enviar</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
@@ -67,36 +65,58 @@
                 <v-flex xs12 md6 lg6>
                     <v-card flat class="elevation-5">
                         <v-toolbar dark color="blue darken-4">
-                            <v-toolbar-title>Café tostado</v-toolbar-title>
+                            <v-toolbar-title>Agregar café</v-toolbar-title>
                             <v-spacer></v-spacer>
                         </v-toolbar>
 
                         <v-card-title primary-title>
                             <v-layout row wrap>
                                 <v-flex xs12 lg12>
-                                    <h3 class="headline mb-0">Cantidad disponible</h3>
-                                    <div>{{ getBalanceTostadoValue()}} KG</div>
-                                </v-flex>
+                                    <h3 class="headline mb-0">Tipo de café</h3>
 
-                                <v-flex xs12 lg12>
-                                    <h3 class="headline mb-0">Enviar a</h3>
-                                    <v-select
-                                      :items="getBcAccounts"
-                                      item-text="owner"
-                                      item-value="bcAccount"
-                                      v-model="selectedTostado"
-                                      label="Destinatario"
-                                      color="blue darken-2"
-                                    ></v-select>
-                                </v-flex>
+                                    <v-radio-group v-model="tipoCafe">
+                                        <v-radio label="Café tostado" value="CafeTostado"></v-radio>
+                                        <v-radio label="Café verde" value="CafeVerde"></v-radio>
+                                    </v-radio-group>
 
-                                <v-flex xs12 lg12>
-                                    <h3 class="headline mb-0">Cantidad a enviar</h3>
-                                    <v-text-field
+                                    <!--<v-text-field
                                     color="blue darken-2"
                                     name="cantidadCafeVerde"
-                                    v-model="cantidadCafeTostado"
+                                    v-model="tipoCafe"
                                     label=""
+                                    type="text">
+                                    </v-text-field>-->
+                                </v-flex>
+
+                                <v-flex xs12 lg12>
+                                    <h3 class="headline mb-0">¿Donde lo hizo?</h3>
+                                    <v-text-field
+                                    color="blue darken-2"
+                                    name="factorNaturaleza"
+                                    v-model="factorNaturaleza"
+                                    label="Lugar"
+                                    type="text">
+                                    </v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 lg12>
+                                    <h3 class="headline mb-0">Técnicas aplicadas</h3>
+                                    <v-text-field
+                                    color="blue darken-2"
+                                    name="factorTradicion"
+                                    v-model="factorTradicion"
+                                    label="Técnicas"
+                                    type="text">
+                                    </v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 lg12>
+                                    <h3 class="headline mb-0">¿Quienes trabajaron haciendo el café?</h3>
+                                    <v-text-field
+                                    color="blue darken-2"
+                                    name="factorHumano"
+                                    v-model="factorHumano"
+                                    label="Nombres"
                                     type="text">
                                     </v-text-field>
                                 </v-flex>
@@ -105,7 +125,7 @@
 
                         <v-card-actions>
                             <v-btn flat color="green">Más detalles</v-btn>
-                            <v-btn flat color="green" @click="submitTostado()">Enviar</v-btn>
+                            <v-btn flat color="green" @click="">Enviar</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
@@ -130,7 +150,7 @@ import config from '../config';
 const apiURL = 'http://' + config.apiHost;
 console.log('ETH NETWORK', config.ethNetwork);
 
-const Web3 = require("web3");
+/*const Web3 = require("web3");
 const web3 = new Web3();
 
 //import contractVerde from '../output/CafeVerde.json';
@@ -148,7 +168,7 @@ MycontractTostado.setProvider(provider);
 
 //console.log(contractVerde);
 
-console.log('WEB3', web3.eth);
+console.log('WEB3', web3.eth);*/
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -164,6 +184,12 @@ export default {
             selectedTostado: "",
             radioGroup: 1,
             radioGroup2: 1,
+            selectedCafe: "",
+            tipoCafe: "",
+            factorNaturaleza: "",
+            factorHumano: "",
+            factorTradicion: "",
+            cantidadCafe: 0,
             accounts: []
         };
     },
@@ -173,16 +199,22 @@ export default {
             "getUser",
             "getErrorMessage",
             "getBcAccounts",
-            "getTransactionInfo"
+            "getTransactionInfo",
+            "GET_TX_HASHES_BY_ID"
         ])
     },
 
     methods: {
         begin: function() {
             this.$store.dispatch("getAllAccounts");
+            this.$store.dispatch('getHashesByUserId');
         },
 
-        getBalanceVerdeValue() {
+        getHashes: function () {
+            this.$store.dispatch('getHashesByUserId');
+        },
+
+        /*getBalanceVerdeValue() {
             this.getBalancesVerde();
             return this.balanceVerde;
         },
@@ -378,7 +410,7 @@ export default {
                     console.log(err.message);
                 });
             });
-        },
+        },*/
 
         ...mapActions([
             "getUserInfo",
@@ -388,7 +420,8 @@ export default {
             "currentBalanceVerde",
             "getParentByAccount",
             "getUserByAccount",
-            "removeParentDataByAccount"
+            "removeParentDataByAccount",
+            "getHashesByUserId"
         ])
     },
 
