@@ -18,9 +18,12 @@
                 <v-flex xs12 lg6>
                     <v-card light>
                         <v-card-text>
-                            <p>Recibido de la cuenta {{hola[0]}}</p>
-                            <p>Enviado a la cuenta: {{hola[1]}}</p>
-                            <p>Se envio: {{hola[2]}}KG de cafe</p>
+                            <h4>SE CERTIFICA QUE ES CAFE COLOMBIANO</h4>
+                            <p>Sembrado por: Christian</p>
+                            <p>Tradiciones: Se tosto el cafe con agua</p>
+                            <p>Sembrado en: Risaralda</p>
+                            <p>Cantidad sembrada: 15KG</p>
+                            
                         </v-card-text>
                     </v-card>
                 </v-flex>

@@ -199,7 +199,12 @@
                                     <div v-for="(owner, i) in innerTransaction.history" :key="i">
                                         {{ owner }}
                                     </div>
+                                    
                                 </v-card-text>
+
+                                <v-card-actions>
+                                    <v-btn light flat @click="downloadQR(innerTransaction.txHash)">Descargar QR</v-btn>
+                                </v-card-actions>
                             </v-card>
                         </v-flex>
                     </div>
@@ -267,6 +272,10 @@ export default {
 
         submit () {
             this.$store.dispatch('getUserInfo');
+        },
+        downloadQR(param1){
+            console.log(param1);
+            
         },
 
         bringtransactions () {
